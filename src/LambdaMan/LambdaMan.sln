@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaMan.GameLogic", "..\LambdaMan\LambdaMan.GameLogic\LambdaMan.GameLogic.csproj", "{068763FD-DC43-4283-9C7B-BF26C0F346AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaMan.Common", "..\LambdaMan\LambdaMan.Common\LambdaMan.Common.csproj", "{186F07EE-2B56-4A9E-9B79-B13E91B5016B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaMan.Simulator", "..\LambdaMan\LambdaMan.Simulator\LambdaMan.Simulator.csproj", "{B609152F-4D47-42B8-A072-D75DD3616444}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaMan.Compiler", "..\LambdaMan\LambdaMan.Compiler\LambdaMan.Compiler.csproj", "{2039009B-045A-44EF-AE50-4AB7804A0509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGcc", "..\LambdaMan\VisualGcc\VisualGcc.csproj", "{A50F0DFC-0615-4564-B4B5-7F7782146BAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{068763FD-DC43-4283-9C7B-BF26C0F346AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068763FD-DC43-4283-9C7B-BF26C0F346AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068763FD-DC43-4283-9C7B-BF26C0F346AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068763FD-DC43-4283-9C7B-BF26C0F346AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186F07EE-2B56-4A9E-9B79-B13E91B5016B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186F07EE-2B56-4A9E-9B79-B13E91B5016B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186F07EE-2B56-4A9E-9B79-B13E91B5016B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186F07EE-2B56-4A9E-9B79-B13E91B5016B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B609152F-4D47-42B8-A072-D75DD3616444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B609152F-4D47-42B8-A072-D75DD3616444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B609152F-4D47-42B8-A072-D75DD3616444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B609152F-4D47-42B8-A072-D75DD3616444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2039009B-045A-44EF-AE50-4AB7804A0509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2039009B-045A-44EF-AE50-4AB7804A0509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2039009B-045A-44EF-AE50-4AB7804A0509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2039009B-045A-44EF-AE50-4AB7804A0509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A50F0DFC-0615-4564-B4B5-7F7782146BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A50F0DFC-0615-4564-B4B5-7F7782146BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A50F0DFC-0615-4564-B4B5-7F7782146BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A50F0DFC-0615-4564-B4B5-7F7782146BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

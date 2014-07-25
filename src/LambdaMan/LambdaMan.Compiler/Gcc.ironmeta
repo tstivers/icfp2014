@@ -1,0 +1,26 @@
+﻿using System;
+using System.Linq;
+
+ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
+{
+   SEMI = ';' SP;
+   SP = (WS | Comment)*;
+   WS = ' ' | '\n' | '\r' | '\t';
+   BRA = '{' SP;
+   KET = '}' SP;
+
+   Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
+   Comment = "/*" (~"*/" .)* "*/";
+
+   GccProgram = BRA Instruction+:instructions KET -> { return new GccProgram(instructions.Results.Select(x => x as Instruction)); };
+
+   Constant = ['0'-'9']+:n SP -> { return new Constant(int.Parse(Input(n))); };
+
+   LDC = "LDC" SP Constant:c -> { return new LDC((Symbol)c.Results.First()); };
+
+   LD = "LD" SP Constant:n SP Constant:i -> { return new LD((Symbol)n.Results.First(), (Symbol)i.Results.First()); };
+
+
+
+   Instruction = (LDC | LD) SEMI;
+}
