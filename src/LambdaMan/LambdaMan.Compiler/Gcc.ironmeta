@@ -12,15 +12,55 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
    Comment = "/*" (~"*/" .)* "*/";
 
-   GccProgram = BRA Instruction+:instructions KET -> { return new GccProgram(instructions.Results.Select(x => x as Instruction)); };
+   GccProgram = Instruction+:instructions -> { return new GccProgram(instructions.Results.Select(x => x as Instruction)); };
 
    Constant = ['0'-'9']+:n SP -> { return new Constant(int.Parse(Input(n))); };
 
-   LDC = "LDC" SP Constant:c -> { return new LDC((Symbol)c.Results.First()); };
+   Identifier = Ident:id SP -> { return id; };
+   Ident = (IdentBegin IdentBody*):id -> { return new Identifier(Input(id)); };
+   IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
+   IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
 
-   LD = "LD" SP Constant:n SP Constant:i -> { return new LD((Symbol)n.Results.First(), (Symbol)i.Results.First()); };
+   Symbol = Constant | Identifier;
 
+   LDC = "LDC" SP Constant:c -> { return new LDC((Symbol)((ASTNode)c)); };
 
+   LD = "LD" SP Constant:n SP Constant:i -> { return new LD((Symbol)((ASTNode)n), (Symbol)((ASTNode)i)); };
 
-   Instruction = (LDC | LD) SEMI;
+   ADD = "ADD" -> { return new ADD(); };
+   SUB = "SUB" -> { return new SUB(); };
+   MUL = "MUL" -> { return new MUL(); };
+   DIV = "DIV" -> { return new DIV(); };
+
+   CEQ = "CEQ" -> { return new CEQ(); };
+   CGT = "CGT" -> { return new CGT(); };
+   CGTE = "CGTE" -> { return new CGTE(); };
+
+   ATOM = "ATOM" -> { return new ATOM(); };
+
+   CONS = "CONS" -> { return new CONS(); };
+   CAR = "CAR" -> { return new CAR(); };
+   CDR = "CDR" -> { return new CDR(); };
+
+   SEL = "SEL" SP Symbol:trueAddress SP Symbol:falseAddress -> { return new SEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
+   JOIN = "JOIN" -> { return new JOIN(); };
+
+   LDF = "LDF" SP Symbol:address -> { return new LDF((Symbol)((ASTNode)address)); };
+
+   AP = "AP" SP Constant:n -> { return new AP((Constant)((ASTNode)n)); };
+   RTN = "RTN" -> { return new RTN(); };
+
+   DUM = "DUM" SP Constant:n -> { return new DUM((Constant)((ASTNode)n)); };
+   RAP = "RAP" SP Constant:n -> { return new RAP((Constant)((ASTNode)n)); };
+   
+   STOP = "STOP" -> { return new STOP(); };
+
+   TSEL = "TSEL" SP Symbol:trueAddress SP Symbol:falseAddress -> { return new TSEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
+   TAP = "TAP" SP Constant:n -> { return new TAP((Constant)((ASTNode)n)); };
+   TRAP = "TRAP" SP Constant:n -> { return new TRAP((Constant)((ASTNode)n)); };
+
+   DBUG = "DBUG" -> { return new DBUG(); };
+   BRK = "BRK" -> { return new BRK(); };
+
+   Instruction = (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK) SP;
 }
