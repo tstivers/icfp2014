@@ -85,6 +85,28 @@ namespace LambdaMan.Compiler
         }
     }
 
+    public class ST : Instruction
+    {
+        public Constant Frame { get; set; }
+        public Symbol Index { get; set; }
+
+        public ST(Constant frame, Symbol index)
+        {
+            Frame = frame;
+            Index = index;
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            if (Index is Identifier)
+                Index = new Constant(FindLocalVariable(Index.ToString()));
+
+            b.AppendFormat("ST {0} {1}", Frame, Index);
+            b.AppendLine();
+        }
+    }
+
     public class LDF : Instruction
     {
         public Symbol FunctionAddress { get; set; }

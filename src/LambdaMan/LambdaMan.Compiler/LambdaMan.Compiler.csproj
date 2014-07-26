@@ -63,14 +63,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OperatorExpression.cs" />
-    <Compile Include="Function.cs" />
-    <Compile Include="FunctionCall.cs" />
+    <Compile Include="Assignment.cs" />
+    <Compile Include="Declaration.cs" />
     <Compile Include="Gcc.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Gcc.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="OperatorExpression.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="FunctionCall.cs" />
     <Compile Include="GccCompiler.cs" />
     <Compile Include="GccProgram.cs" />
     <Compile Include="Instructions.cs" />

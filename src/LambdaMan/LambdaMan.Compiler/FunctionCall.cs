@@ -30,7 +30,7 @@ namespace LambdaMan.Compiler
         {
             var f = FindFunction(Name);
 
-            if (Parameters.Count() != f.Parameters.Count())
+            if (Parameters.Count() != f.ParameterCount)
                 throw new Exception("Argument count mismatch: " + Name);
 
             foreach (var p in Parameters)
@@ -39,8 +39,11 @@ namespace LambdaMan.Compiler
                 Instructions.AddRange(p.Evaluate());
             }
 
+            for (var i = Parameters.Count; i < f.VariableCount; i++)
+                Instructions.Add(new LDC(new Constant(0)));
+
             Instructions.Add(new LDF(new Identifier(f.Name)));
-            Instructions.Add(new AP(new Constant(Parameters.Count())));
+            Instructions.Add(new AP(new Constant(f.VariableCount)));
 
             foreach (var i in Instructions)
             {

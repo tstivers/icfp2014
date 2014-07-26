@@ -21,13 +21,17 @@ namespace LambdaMan.Compiler
         public string Name { get; set; }
 
         private readonly List<ASTNode> _instructions;
-        public List<Identifier> Parameters { get; private set; }
+        public List<string> Parameters { get; private set; }
+        public int ParameterCount { get; private set; }
+        public int VariableCount { get; set; }
 
         public Function(string name, IEnumerable<ASTNode> instructions, IEnumerable<Identifier> parameters)
         {
             Name = name;
             _instructions = instructions.ToList();
-            Parameters = parameters.ToList();
+            Parameters = parameters.Select(x => x.Name).ToList();
+            ParameterCount = Parameters.Count;
+            VariableCount = Parameters.Count;
         }
 
         public override void BuildSymbolTable(ASTNode parent)
@@ -36,7 +40,7 @@ namespace LambdaMan.Compiler
             parent.Symbols[Name] = this;
 
             foreach (var p in Parameters)
-                Symbols[p.Name] = this;
+                Symbols[p] = this;
 
             foreach (var instruction in _instructions)
                 instruction.BuildSymbolTable(this);

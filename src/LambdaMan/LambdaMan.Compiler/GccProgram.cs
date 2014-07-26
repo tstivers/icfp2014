@@ -38,7 +38,7 @@ namespace LambdaMan.Compiler
             if (!Symbols.TryGetValue(name, out node) || !(node is Function))
                 throw new Exception("Unable to find local variable: " + name);
 
-            return (node as Function).Parameters.FindIndex(x => x.Name == name);
+            return (node as Function).Parameters.IndexOf(name);
         }
 
         public virtual int Address { get; set; }
