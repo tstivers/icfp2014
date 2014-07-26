@@ -19,9 +19,9 @@ namespace LambdaMan.Compiler
             Node.BuildSymbolTable(parent);
         }             
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
-            var instructions = new List<ASTNode>();
+            var instructions = new List<Instruction>();
             instructions.AddRange(Node.Compile(parent));
             instructions.Add(new ST(new Constant(0), new Identifier(Name, this), parent));
 

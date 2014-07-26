@@ -30,7 +30,7 @@ namespace LambdaMan.Compiler
             });
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             return EmptyNodeList;
         }
@@ -38,11 +38,6 @@ namespace LambdaMan.Compiler
         public override void Link(ref int address)
         {
             // do nothing
-        }
-
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
-        {
-            // do nothing
-        }
+        }      
     }
 }

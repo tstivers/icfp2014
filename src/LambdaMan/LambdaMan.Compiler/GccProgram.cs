@@ -25,9 +25,9 @@ namespace LambdaMan.Compiler
                 node.BuildSymbolTable(this);
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
-            var instructions = new List<ASTNode>();
+            var instructions = new List<Instruction>();
 
             foreach (var node in _nodes)
                 instructions.AddRange(node.Compile(this));
@@ -39,12 +39,6 @@ namespace LambdaMan.Compiler
         {
             foreach (var node in _nodes)
                 node.Link(ref address);
-        }
-
-        public override void Emit(StringBuilder b, bool includeLineNumbers, bool includeComments)
-        {
-            foreach (var instruction in _nodes)
-                instruction.Emit(b, includeLineNumbers, includeComments);
-        }
+        }     
     }
 }

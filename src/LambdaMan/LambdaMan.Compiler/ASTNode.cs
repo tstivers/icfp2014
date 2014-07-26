@@ -8,7 +8,9 @@ namespace LambdaMan.Compiler
     {
         public ASTNode Parent { get; set; }
 
-        protected static readonly IEnumerable<ASTNode> EmptyNodeList = new List<ASTNode>();
+        public string Comment { get; set; }
+
+        protected static readonly IEnumerable<Instruction> EmptyNodeList = new List<Instruction>();
 
         public virtual Dictionary<string, ASTNode> Symbols
         {
@@ -45,7 +47,7 @@ namespace LambdaMan.Compiler
 
         public virtual int Address { get; set; }
 
-        public abstract IEnumerable<ASTNode> Compile(ASTNode parent);      
+        public abstract IEnumerable<Instruction> Compile(ASTNode parent);      
 
         public virtual void Link(ref int address)
         {
@@ -59,12 +61,6 @@ namespace LambdaMan.Compiler
         public virtual void BuildSymbolTable(ASTNode parent)
         {
             Parent = parent;
-        }
-
-        public virtual void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
-        {
-            if (includeLineNumbers)
-                b.AppendFormat("[{0,5}] ", Address);
-        }
+        }        
     }
 }

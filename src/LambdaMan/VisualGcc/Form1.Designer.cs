@@ -33,6 +33,7 @@
             this.InputTextBox = new System.Windows.Forms.TextBox();
             this.OutputTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.includeCommentsCheckbox = new System.Windows.Forms.CheckBox();
             this.lineNumbersCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.PropertiesSplitter)).BeginInit();
             this.PropertiesSplitter.Panel1.SuspendLayout();
@@ -60,7 +61,7 @@
             // 
             this.PropertiesSplitter.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.PropertiesSplitter.Size = new System.Drawing.Size(1272, 1040);
-            this.PropertiesSplitter.SplitterDistance = 779;
+            this.PropertiesSplitter.SplitterDistance = 902;
             this.PropertiesSplitter.TabIndex = 0;
             // 
             // CodeSplitter
@@ -76,8 +77,8 @@
             // CodeSplitter.Panel2
             // 
             this.CodeSplitter.Panel2.Controls.Add(this.OutputTextBox);
-            this.CodeSplitter.Size = new System.Drawing.Size(1272, 779);
-            this.CodeSplitter.SplitterDistance = 579;
+            this.CodeSplitter.Size = new System.Drawing.Size(1272, 902);
+            this.CodeSplitter.SplitterDistance = 830;
             this.CodeSplitter.TabIndex = 0;
             // 
             // InputTextBox
@@ -87,7 +88,7 @@
             this.InputTextBox.Location = new System.Drawing.Point(0, 0);
             this.InputTextBox.Multiline = true;
             this.InputTextBox.Name = "InputTextBox";
-            this.InputTextBox.Size = new System.Drawing.Size(579, 779);
+            this.InputTextBox.Size = new System.Drawing.Size(830, 902);
             this.InputTextBox.TabIndex = 0;
             this.InputTextBox.TextChanged += new System.EventHandler(this.InputTextBox_TextChanged);
             // 
@@ -98,32 +99,44 @@
             this.OutputTextBox.Location = new System.Drawing.Point(0, 0);
             this.OutputTextBox.Multiline = true;
             this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.Size = new System.Drawing.Size(689, 779);
+            this.OutputTextBox.Size = new System.Drawing.Size(438, 902);
             this.OutputTextBox.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.22013F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.77988F));
+            this.tableLayoutPanel1.Controls.Add(this.includeCommentsCheckbox, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lineNumbersCheckBox, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1272, 257);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.89552F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.10448F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1272, 134);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // includeCommentsCheckbox
+            // 
+            this.includeCommentsCheckbox.AutoSize = true;
+            this.includeCommentsCheckbox.Location = new System.Drawing.Point(3, 31);
+            this.includeCommentsCheckbox.Name = "includeCommentsCheckbox";
+            this.includeCommentsCheckbox.Size = new System.Drawing.Size(113, 17);
+            this.includeCommentsCheckbox.TabIndex = 1;
+            this.includeCommentsCheckbox.Text = "Include Comments";
+            this.includeCommentsCheckbox.UseVisualStyleBackColor = true;
+            this.includeCommentsCheckbox.CheckedChanged += new System.EventHandler(this.includeCommentsCheckbox_CheckedChanged);
             // 
             // lineNumbersCheckBox
             // 
             this.lineNumbersCheckBox.AutoSize = true;
             this.lineNumbersCheckBox.Location = new System.Drawing.Point(3, 3);
             this.lineNumbersCheckBox.Name = "lineNumbersCheckBox";
-            this.lineNumbersCheckBox.Size = new System.Drawing.Size(129, 17);
+            this.lineNumbersCheckBox.Size = new System.Drawing.Size(105, 17);
             this.lineNumbersCheckBox.TabIndex = 0;
-            this.lineNumbersCheckBox.Text = "Include Line Numbers";
+            this.lineNumbersCheckBox.Text = "Show Addresses";
             this.lineNumbersCheckBox.UseVisualStyleBackColor = true;
             this.lineNumbersCheckBox.CheckedChanged += new System.EventHandler(this.lineNumbersCheckBox_CheckedChanged);
             // 
@@ -161,6 +174,7 @@
         private System.Windows.Forms.TextBox OutputTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox lineNumbersCheckBox;
+        private System.Windows.Forms.CheckBox includeCommentsCheckbox;
     }
 }
 

@@ -23,10 +23,10 @@ namespace LambdaMan.Compiler
             RValue.BuildSymbolTable(parent);
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             Parent = parent;
-            var instructions = new List<ASTNode>();
+            var instructions = new List<Instruction>();
 
             Instruction opIns = null;
             var swap = false;

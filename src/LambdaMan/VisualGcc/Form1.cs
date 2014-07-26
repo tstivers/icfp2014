@@ -1,6 +1,6 @@
-﻿using System.IO;
-using LambdaMan.Compiler;
+﻿using LambdaMan.Compiler;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace VisualGcc
@@ -16,7 +16,7 @@ namespace VisualGcc
         {
             var compiler = new GccCompiler();
 
-            OutputTextBox.Text = compiler.Compile(InputTextBox.Text, lineNumbersCheckBox.Checked);
+            OutputTextBox.Text = compiler.Compile(InputTextBox.Text, lineNumbersCheckBox.Checked, includeCommentsCheckbox.Checked);
         }
 
         private void lineNumbersCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -26,7 +26,7 @@ namespace VisualGcc
 
         private void VisualGccForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            File.WriteAllText("contents.txt", InputTextBox.Text);           
+            File.WriteAllText("contents.txt", InputTextBox.Text);
             File.WriteAllText(String.Format("contents.{0:s}.txt", DateTime.Now).Replace(':', '.'), InputTextBox.Text);
         }
 
@@ -34,6 +34,11 @@ namespace VisualGcc
         {
             if (File.Exists("contents.txt"))
                 InputTextBox.Text = File.ReadAllText("contents.txt");
+        }
+
+        private void includeCommentsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            InputTextBox_TextChanged(sender, e);
         }
     }
 }

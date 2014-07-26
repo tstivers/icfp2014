@@ -6,7 +6,7 @@ namespace LambdaMan.Compiler
 {
     public class GccCompiler
     {
-        public string Compile(string input, bool includeLineNumbers = false)
+        public string Compile(string input, bool includeLineNumbers = false, bool includeComments = false)
         {
             var parser = new Parser();
 
@@ -25,7 +25,7 @@ namespace LambdaMan.Compiler
                         i.Link(ref address);
 
                     foreach (var i in instructions)
-                        i.Emit(b, includeLineNumbers);
+                        b.AppendLine(i.Emit(includeLineNumbers, includeComments));
                     
                     return b.ToString();
                 }

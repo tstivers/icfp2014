@@ -1,24 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 
 namespace LambdaMan.Compiler
 {
     public abstract class Instruction : ASTNode
     {
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
-            return new List<ASTNode> { this };
+            return new List<Instruction> { this };
+        }
+
+        public abstract string Emit(bool includeLineNumbers = false, bool includeComments = false);
+
+        protected string EmitFormat(string opcode, string arg1, string arg2, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            return String.Format("{0}{1,-5}{2,-3}{3,-3}{4}",
+                includeLineNumbers ? String.Format("[{0,4}] ", Address) : String.Empty,
+                opcode,
+                arg1,
+                arg2,
+                includeComments && Comment != null ? String.Format("  ; {0}", Comment) : String.Empty);
+
         }
     }
 
     public abstract class SimpleInstruction : Instruction
     {
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
-            b.AppendLine(GetType().Name);
+            return EmitFormat(GetType().Name, String.Empty, String.Empty, includeLineNumbers, includeComments);
         }
     }
 
@@ -26,28 +37,25 @@ namespace LambdaMan.Compiler
     {
         public Constant NumArguments { get; set; }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
-            b.AppendFormat("{0} {1}", GetType().Name, NumArguments.Value);
-            b.AppendLine();
+            return EmitFormat(GetType().Name, NumArguments.ToString(), String.Empty, includeLineNumbers, includeComments);
         }
     }
 
     public abstract class SELInstruction : Instruction
     {
         public Symbol TrueAddress { get; set; }
-        public Symbol FalseAddress { get; set; }        
+        public Symbol FalseAddress { get; set; }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
             if (TrueAddress is Identifier)
                 TrueAddress = new Constant(FindFunction((TrueAddress as Identifier).ToString()).Address);
             if (FalseAddress is Identifier)
                 FalseAddress = new Constant(FindFunction((FalseAddress as Identifier).ToString()).Address);
-            b.AppendFormat("{0} {1} {2}", GetType().Name, TrueAddress, FalseAddress);
-            b.AppendLine();
+            return EmitFormat(GetType().Name, TrueAddress.ToString(), FalseAddress.ToString(), includeLineNumbers,
+                includeComments);
         }
     }
 
@@ -61,11 +69,9 @@ namespace LambdaMan.Compiler
             Constant = constant;
         }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
-            b.AppendFormat("LDC {0}", Constant);
-            b.AppendLine();
+            return EmitFormat(GetType().Name, Constant.ToString(), String.Empty, includeLineNumbers, includeComments);
         }
     }
 
@@ -81,14 +87,12 @@ namespace LambdaMan.Compiler
             Parent = parent;
         }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
             if (Index is Identifier)
                 Index = new Constant(FindLocal(Index.ToString()));
 
-            b.AppendFormat("LD {0} {1}", Frame, Index);
-            b.AppendLine();
+            return EmitFormat(GetType().Name, Frame.ToString(), Index.ToString(), includeLineNumbers, includeComments);
         }
     }
 
@@ -104,14 +108,12 @@ namespace LambdaMan.Compiler
             Parent = parent;
         }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
-            base.Emit(b, includeLineNumbers, includeComments);
             if (Index is Identifier)
                 Index = new Constant(FindLocal(Index.ToString()));
 
-            b.AppendFormat("ST {0} {1}", Frame, Index);
-            b.AppendLine();
+            return EmitFormat(GetType().Name, Frame.ToString(), Index.ToString(), includeLineNumbers, includeComments);
         }
     }
 
@@ -125,13 +127,12 @@ namespace LambdaMan.Compiler
             Parent = parent;
         }
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
-        {
-            base.Emit(b, includeLineNumbers, includeComments);
+        public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
+        {            
             if (FunctionAddress is Identifier)
                 FunctionAddress = new Constant(FindFunction(FunctionAddress.ToString()).Address);
-            b.AppendFormat("LDF {0}", FunctionAddress);
-            b.AppendLine();
+           
+            return EmitFormat(GetType().Name, FunctionAddress.ToString(), String.Empty, includeLineNumbers, includeComments);
         }
     }
 
@@ -160,7 +161,7 @@ namespace LambdaMan.Compiler
         public AP(Constant numArguments)
         {
             NumArguments = numArguments;
-        }      
+        }
     }
 
     public class DUM : NumArgumentsInstruction

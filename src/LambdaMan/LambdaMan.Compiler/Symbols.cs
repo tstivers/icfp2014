@@ -21,7 +21,7 @@ namespace LambdaMan.Compiler
             return Name;
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             return new List<Instruction> { new LD(new Constant(0), this, parent) };
         }
@@ -41,7 +41,7 @@ namespace LambdaMan.Compiler
             return Value.ToString();
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             return new List<Instruction> { new LDC(this) };
         }

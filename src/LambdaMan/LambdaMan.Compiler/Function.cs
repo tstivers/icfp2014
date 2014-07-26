@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -16,12 +17,13 @@ namespace LambdaMan.Compiler
 
         public override int Address
         {
-            get { return _nodes[0].Address; }
+            get { return _firstInstruction.Address; }
         }
 
         public string Name { get; set; }
 
         private readonly List<ASTNode> _nodes;
+        private Instruction _firstInstruction;
 
         public List<string> Locals { get; private set; }
         public int ParameterCount { get; private set; }
@@ -46,9 +48,9 @@ namespace LambdaMan.Compiler
                 node.BuildSymbolTable(this);
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
-            var instructions = new List<ASTNode>();
+            var instructions = new List<Instruction>();
 
             if (!(_nodes.Last() is RTN))
                 _nodes.Add(new RTN());
@@ -56,6 +58,9 @@ namespace LambdaMan.Compiler
             foreach (var node in _nodes)
                 instructions.AddRange(node.Compile(this));
 
+            _firstInstruction = instructions.First();
+            _firstInstruction.Comment = String.Format("function {0}({1})", Name, String.Join(", ", Locals.Take(ParameterCount)));
+            instructions.Last().Comment = String.Format("end function {0}", Name);
             return instructions;
         }
     }

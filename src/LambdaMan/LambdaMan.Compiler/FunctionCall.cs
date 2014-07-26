@@ -17,10 +17,10 @@ namespace LambdaMan.Compiler
             Parameters = parameters.ToList();            
         }
 
-        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             var f = FindFunction(Name);
-            var instructions = new List<ASTNode>();
+            var instructions = new List<Instruction>();
 
             if (Parameters.Count() != f.ParameterCount)
                 throw new Exception("Argument count mismatch: " + Name);
@@ -33,6 +33,7 @@ namespace LambdaMan.Compiler
 
             instructions.Add(new LDF(new Identifier(f.Name, this), this));
             instructions.Add(new AP(new Constant(f.Locals.Count)));
+            instructions.Last().Comment = "call function " + Name;
 
             return instructions;
         }
