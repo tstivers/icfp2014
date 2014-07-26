@@ -25,10 +25,14 @@ namespace LambdaMan.Compiler
 
             Names.ForEach(x =>
             {
-                f.Parameters.Add(x);
-                f.Symbols.Add(x, f);
-                f.VariableCount++;
+                f.Locals.Add(x);
+                f.Symbols.Add(x, f);                
             });
+        }
+
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        {
+            return EmptyNodeList;
         }
 
         public override void Link(ref int address)

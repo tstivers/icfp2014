@@ -1,5 +1,5 @@
 ﻿//
-// IronMeta Parser Parser; Generated 2014-07-26 16:21:03Z UTC
+// IronMeta Parser Parser; Generated 2014-07-26 17:21:47Z UTC
 //
 
 using System;
@@ -2983,7 +2983,7 @@ namespace LambdaMan.Compiler
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Assignment(Input(name), (IExpression)((ASTNode)e)); }, _r0), true) );
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Assignment(Input(name), (ASTNode)e); }, _r0), true) );
             }
 
         }
@@ -4393,7 +4393,7 @@ namespace LambdaMan.Compiler
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new FunctionCall(Input(name), parameters.Results.Cast<IExpression>()); }, _r0), true) );
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new FunctionCall(Input(name), parameters.Results); }, _r0), true) );
             }
 
         }
@@ -4424,42 +4424,109 @@ namespace LambdaMan.Compiler
             // AND 6
             int _start_i6 = _index;
 
-            // STAR 7
+            // AND 7
             int _start_i7 = _index;
-            var _res7 = Enumerable.Empty<ASTNode>();
-        label7:
+
+            // AND 8
+            int _start_i8 = _index;
+
+            // LITERAL "("
+            _ParseLiteralString(_memo, ref _index, "(");
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label8; }
+
+            // STAR 10
+            int _start_i10 = _index;
+            var _res10 = Enumerable.Empty<ASTNode>();
+        label10:
 
             // CALLORVAR WS
-            _Parser_Item _r8;
+            _Parser_Item _r11;
 
-            _r8 = _MemoCall(_memo, "WS", _index, WS, null);
+            _r11 = _MemoCall(_memo, "WS", _index, WS, null);
 
-            if (_r8 != null) _index = _r8.NextIndex;
+            if (_r11 != null) _index = _r11.NextIndex;
 
-            // STAR 7
-            var _r7 = _memo.Results.Pop();
-            if (_r7 != null)
+            // STAR 10
+            var _r10 = _memo.Results.Pop();
+            if (_r10 != null)
             {
-                _res7 = _res7.Concat(_r7.Results);
-                goto label7;
+                _res10 = _res10.Concat(_r10.Results);
+                goto label10;
             }
             else
             {
-                _memo.Results.Push(new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _res7.Where(_NON_NULL), true));
+                _memo.Results.Push(new _Parser_Item(_start_i10, _index, _memo.InputEnumerable, _res10.Where(_NON_NULL), true));
+            }
+
+        label8: // AND
+            var _r8_2 = _memo.Results.Pop();
+            var _r8_1 = _memo.Results.Pop();
+
+            if (_r8_1 != null && _r8_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i8, _index, _memo.InputEnumerable, _r8_1.Results.Concat(_r8_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i8;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label7; }
+
+            // CALLORVAR Expression
+            _Parser_Item _r13;
+
+            _r13 = _MemoCall(_memo, "Expression", _index, Expression, null);
+
+            if (_r13 != null) _index = _r13.NextIndex;
+
+            // BIND l
+            l = _memo.Results.Peek();
+
+        label7: // AND
+            var _r7_2 = _memo.Results.Pop();
+            var _r7_1 = _memo.Results.Pop();
+
+            if (_r7_1 != null && _r7_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i7;
             }
 
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label6; }
 
-            // CALLORVAR Expression
-            _Parser_Item _r10;
+            // STAR 14
+            int _start_i14 = _index;
+            var _res14 = Enumerable.Empty<ASTNode>();
+        label14:
 
-            _r10 = _MemoCall(_memo, "Expression", _index, Expression, null);
+            // CALLORVAR WS
+            _Parser_Item _r15;
 
-            if (_r10 != null) _index = _r10.NextIndex;
+            _r15 = _MemoCall(_memo, "WS", _index, WS, null);
 
-            // BIND l
-            l = _memo.Results.Peek();
+            if (_r15 != null) _index = _r15.NextIndex;
+
+            // STAR 14
+            var _r14 = _memo.Results.Pop();
+            if (_r14 != null)
+            {
+                _res14 = _res14.Concat(_r14.Results);
+                goto label14;
+            }
+            else
+            {
+                _memo.Results.Push(new _Parser_Item(_start_i14, _index, _memo.InputEnumerable, _res14.Where(_NON_NULL), true));
+            }
 
         label6: // AND
             var _r6_2 = _memo.Results.Pop();
@@ -4478,29 +4545,15 @@ namespace LambdaMan.Compiler
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
 
-            // STAR 11
-            int _start_i11 = _index;
-            var _res11 = Enumerable.Empty<ASTNode>();
-        label11:
+            // CALLORVAR Operator
+            _Parser_Item _r17;
 
-            // CALLORVAR WS
-            _Parser_Item _r12;
+            _r17 = _MemoCall(_memo, "Operator", _index, Operator, null);
 
-            _r12 = _MemoCall(_memo, "WS", _index, WS, null);
+            if (_r17 != null) _index = _r17.NextIndex;
 
-            if (_r12 != null) _index = _r12.NextIndex;
-
-            // STAR 11
-            var _r11 = _memo.Results.Pop();
-            if (_r11 != null)
-            {
-                _res11 = _res11.Concat(_r11.Results);
-                goto label11;
-            }
-            else
-            {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _res11.Where(_NON_NULL), true));
-            }
+            // BIND op
+            op = _memo.Results.Peek();
 
         label5: // AND
             var _r5_2 = _memo.Results.Pop();
@@ -4519,15 +4572,29 @@ namespace LambdaMan.Compiler
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
 
-            // CALLORVAR Operator
-            _Parser_Item _r14;
+            // STAR 18
+            int _start_i18 = _index;
+            var _res18 = Enumerable.Empty<ASTNode>();
+        label18:
 
-            _r14 = _MemoCall(_memo, "Operator", _index, Operator, null);
+            // CALLORVAR WS
+            _Parser_Item _r19;
 
-            if (_r14 != null) _index = _r14.NextIndex;
+            _r19 = _MemoCall(_memo, "WS", _index, WS, null);
 
-            // BIND op
-            op = _memo.Results.Peek();
+            if (_r19 != null) _index = _r19.NextIndex;
+
+            // STAR 18
+            var _r18 = _memo.Results.Pop();
+            if (_r18 != null)
+            {
+                _res18 = _res18.Concat(_r18.Results);
+                goto label18;
+            }
+            else
+            {
+                _memo.Results.Push(new _Parser_Item(_start_i18, _index, _memo.InputEnumerable, _res18.Where(_NON_NULL), true));
+            }
 
         label4: // AND
             var _r4_2 = _memo.Results.Pop();
@@ -4546,29 +4613,15 @@ namespace LambdaMan.Compiler
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label3; }
 
-            // STAR 15
-            int _start_i15 = _index;
-            var _res15 = Enumerable.Empty<ASTNode>();
-        label15:
+            // CALLORVAR Expression
+            _Parser_Item _r21;
 
-            // CALLORVAR WS
-            _Parser_Item _r16;
+            _r21 = _MemoCall(_memo, "Expression", _index, Expression, null);
 
-            _r16 = _MemoCall(_memo, "WS", _index, WS, null);
+            if (_r21 != null) _index = _r21.NextIndex;
 
-            if (_r16 != null) _index = _r16.NextIndex;
-
-            // STAR 15
-            var _r15 = _memo.Results.Pop();
-            if (_r15 != null)
-            {
-                _res15 = _res15.Concat(_r15.Results);
-                goto label15;
-            }
-            else
-            {
-                _memo.Results.Push(new _Parser_Item(_start_i15, _index, _memo.InputEnumerable, _res15.Where(_NON_NULL), true));
-            }
+            // BIND r
+            r = _memo.Results.Peek();
 
         label3: // AND
             var _r3_2 = _memo.Results.Pop();
@@ -4587,15 +4640,29 @@ namespace LambdaMan.Compiler
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
 
-            // CALLORVAR Expression
-            _Parser_Item _r18;
+            // STAR 22
+            int _start_i22 = _index;
+            var _res22 = Enumerable.Empty<ASTNode>();
+        label22:
 
-            _r18 = _MemoCall(_memo, "Expression", _index, Expression, null);
+            // CALLORVAR WS
+            _Parser_Item _r23;
 
-            if (_r18 != null) _index = _r18.NextIndex;
+            _r23 = _MemoCall(_memo, "WS", _index, WS, null);
 
-            // BIND r
-            r = _memo.Results.Peek();
+            if (_r23 != null) _index = _r23.NextIndex;
+
+            // STAR 22
+            var _r22 = _memo.Results.Pop();
+            if (_r22 != null)
+            {
+                _res22 = _res22.Concat(_r22.Results);
+                goto label22;
+            }
+            else
+            {
+                _memo.Results.Push(new _Parser_Item(_start_i22, _index, _memo.InputEnumerable, _res22.Where(_NON_NULL), true));
+            }
 
         label2: // AND
             var _r2_2 = _memo.Results.Pop();
@@ -4614,29 +4681,8 @@ namespace LambdaMan.Compiler
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // STAR 19
-            int _start_i19 = _index;
-            var _res19 = Enumerable.Empty<ASTNode>();
-        label19:
-
-            // CALLORVAR WS
-            _Parser_Item _r20;
-
-            _r20 = _MemoCall(_memo, "WS", _index, WS, null);
-
-            if (_r20 != null) _index = _r20.NextIndex;
-
-            // STAR 19
-            var _r19 = _memo.Results.Pop();
-            if (_r19 != null)
-            {
-                _res19 = _res19.Concat(_r19.Results);
-                goto label19;
-            }
-            else
-            {
-                _memo.Results.Push(new _Parser_Item(_start_i19, _index, _memo.InputEnumerable, _res19.Where(_NON_NULL), true));
-            }
+            // LITERAL ")"
+            _ParseLiteralString(_memo, ref _index, ")");
 
         label1: // AND
             var _r1_2 = _memo.Results.Pop();
@@ -4657,7 +4703,7 @@ namespace LambdaMan.Compiler
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new OperatorExpression((IExpression)((ASTNode)l), Input(op), (IExpression)((ASTNode)r)); }, _r0), true) );
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); }, _r0), true) );
             }
 
         }

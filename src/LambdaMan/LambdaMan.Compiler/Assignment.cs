@@ -3,37 +3,27 @@ using System.Collections.Generic;
 
 namespace LambdaMan.Compiler
 {
-    public class Assignment : ASTNode, IExpression
+    public class Assignment : ASTNode
     {
         public string Name { get; set; }
-        public IExpression Expression { get; set; }
+        public ASTNode Node { get; set; }
 
-        public Assignment(string name, IExpression expression)
+        public Assignment(string name, ASTNode node)
         {
             Name = name;
-            Expression = expression;
+            Node = node;
         }
 
         public override void BuildSymbolTable(ASTNode parent)
         {
-            ((ASTNode)Expression).BuildSymbolTable(parent);
-        }
+            Node.BuildSymbolTable(parent);
+        }             
 
-        public override void Compile()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
-            ((ASTNode)Expression).Compile();
-        }
-
-        public override void Link(ref int address)
-        {
-            ((ASTNode)Expression).Link(ref address);
-        }
-
-        public IEnumerable<Instruction> Evaluate()
-        {
-            var instructions = new List<Instruction>();
-            instructions.AddRange(Expression.Evaluate());
-            instructions.Add(new ST(new Constant(0), new Identifier(Name)));
+            var instructions = new List<ASTNode>();
+            instructions.AddRange(Node.Compile(parent));
+            instructions.Add(new ST(new Constant(0), new Identifier(Name, this), parent));
 
             return instructions;
         }

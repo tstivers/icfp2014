@@ -71,16 +71,16 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    Declaration = "var" WT+ (WT* Ident ','?)*:names -> { return new Declaration(names.Results); };
 
-   Assignment = Ident:name WT+ "=" WT+ Expression:e -> { return new Assignment(Input(name), (IExpression)((ASTNode)e)); };
+   Assignment = Ident:name WT+ "=" WT+ Expression:e -> { return new Assignment(Input(name), (ASTNode)e); };
 
-   Expression = OperatorExpression | FunctionCall | Symbol ;
+   Expression = OperatorExpression | FunctionCall | Symbol;
 
    Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
    Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:parameters WT* ")" (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new Function(Input(name), nodes.Results, parameters.Results.Cast<Identifier>()); };
 
-   FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results.Cast<IExpression>()); };
+   FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results); };
 
-   OperatorExpression = WS* Expression:l WS* Operator:op WS* Expression:r WS* -> { return new OperatorExpression((IExpression)((ASTNode)l), Input(op), (IExpression)((ASTNode)r)); };
-   // does not work ParensExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((IExpression)((ASTNode)l), Input(op), (IExpression)((ASTNode)r)); };
+   OperatorExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
+   // does not work ParensExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
 }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace LambdaMan.Compiler
 {
-  public class OperatorExpression : ASTNode, IExpression
+  public class OperatorExpression : ASTNode
     {
-        public IExpression LValue { get; set; }
-        public IExpression RValue { get; set; }
+        public ASTNode LValue { get; set; }
+        public ASTNode RValue { get; set; }
         public string Operator { get; set; }
 
-        public OperatorExpression(IExpression lvalue, string op, IExpression rvalue)
+        public OperatorExpression(ASTNode lvalue, string op, ASTNode rvalue)
         {
             LValue = lvalue;
             Operator = op;
@@ -18,25 +18,15 @@ namespace LambdaMan.Compiler
 
         public override void BuildSymbolTable(ASTNode parent)
         {
-            ((ASTNode)LValue).BuildSymbolTable(parent);
-            ((ASTNode)RValue).BuildSymbolTable(parent);
+            Parent = parent;
+            LValue.BuildSymbolTable(parent);
+            RValue.BuildSymbolTable(parent);
         }
 
-        public override void Compile()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
-            ((ASTNode)LValue).Compile();
-            ((ASTNode)RValue).Compile();
-        }
-
-        public override void Link(ref int address)
-        {
-            ((ASTNode)LValue).Link(ref address);
-            ((ASTNode)RValue).Link(ref address);
-        }
-
-        public IEnumerable<Instruction> Evaluate()
-        {
-            var instructions = new List<Instruction>();
+            Parent = parent;
+            var instructions = new List<ASTNode>();
 
             Instruction opIns = null;
             var swap = false;
@@ -77,13 +67,13 @@ namespace LambdaMan.Compiler
             if (!swap)
             {
 
-                instructions.AddRange(LValue.Evaluate());
-                instructions.AddRange(RValue.Evaluate());
+                instructions.AddRange(LValue.Compile(this));
+                instructions.AddRange(RValue.Compile(this));
             }
             else
             {
-                instructions.AddRange(RValue.Evaluate());
-                instructions.AddRange(LValue.Evaluate());
+                instructions.AddRange(RValue.Compile(this));
+                instructions.AddRange(LValue.Compile(this));
             }
 
             instructions.Add(opIns);

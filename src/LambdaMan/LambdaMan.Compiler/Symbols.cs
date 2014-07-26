@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace LambdaMan.Compiler
 {
@@ -10,13 +6,14 @@ namespace LambdaMan.Compiler
     {
     }
 
-    public class Identifier : Symbol, IExpression
+    public class Identifier : Symbol
     {
         public string Name { get; set; }
 
-        public Identifier(string name)
+        public Identifier(string name, ASTNode parent = null)
         {
             Name = name;
+            Parent = parent;
         }
 
         public override string ToString()
@@ -24,13 +21,13 @@ namespace LambdaMan.Compiler
             return Name;
         }
 
-        public IEnumerable<Instruction> Evaluate()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
-            return new List<Instruction> { new LD(new Constant(0), this) };
+            return new List<Instruction> { new LD(new Constant(0), this, parent) };
         }
     }
 
-    public class Constant : Symbol, IExpression
+    public class Constant : Symbol
     {
         public int Value { get; set; }
 
@@ -44,9 +41,9 @@ namespace LambdaMan.Compiler
             return Value.ToString();
         }
 
-        public IEnumerable<Instruction> Evaluate()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
-            return new List<Instruction> {new LDC(this)};
+            return new List<Instruction> { new LDC(this) };
         }
     }
 }

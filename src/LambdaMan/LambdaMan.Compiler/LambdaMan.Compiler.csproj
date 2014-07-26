@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assignment.cs" />
+    <Compile Include="ASTNode.cs" />
     <Compile Include="Declaration.cs" />
     <Compile Include="Gcc.g.cs">
       <AutoGen>True</AutoGen>

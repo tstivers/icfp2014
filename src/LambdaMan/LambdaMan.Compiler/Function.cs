@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace LambdaMan.Compiler
@@ -15,23 +16,22 @@ namespace LambdaMan.Compiler
 
         public override int Address
         {
-            get { return _instructions[0].Address; }
+            get { return _nodes[0].Address; }
         }
 
         public string Name { get; set; }
 
-        private readonly List<ASTNode> _instructions;
-        public List<string> Parameters { get; private set; }
-        public int ParameterCount { get; private set; }
-        public int VariableCount { get; set; }
+        private readonly List<ASTNode> _nodes;
 
-        public Function(string name, IEnumerable<ASTNode> instructions, IEnumerable<Identifier> parameters)
+        public List<string> Locals { get; private set; }
+        public int ParameterCount { get; private set; }
+
+        public Function(string name, IEnumerable<ASTNode> nodes, IEnumerable<Identifier> parameters)
         {
             Name = name;
-            _instructions = instructions.ToList();
-            Parameters = parameters.Select(x => x.Name).ToList();
-            ParameterCount = Parameters.Count;
-            VariableCount = Parameters.Count;
+            _nodes = nodes.ToList();
+            Locals = parameters.Select(x => x.Name).ToList();
+            ParameterCount = Locals.Count;
         }
 
         public override void BuildSymbolTable(ASTNode parent)
@@ -39,34 +39,24 @@ namespace LambdaMan.Compiler
             base.BuildSymbolTable(parent);
             parent.Symbols[Name] = this;
 
-            foreach (var p in Parameters)
+            foreach (var p in Locals)
                 Symbols[p] = this;
 
-            foreach (var instruction in _instructions)
-                instruction.BuildSymbolTable(this);
+            foreach (var node in _nodes)
+                node.BuildSymbolTable(this);
         }
 
-        public override void Compile()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
-            if (!(_instructions.Last() is RTN))
-                _instructions.Add(new RTN());
+            var instructions = new List<ASTNode>();
 
-            foreach (var instruction in _instructions)
-                instruction.Compile();
-        }
+            if (!(_nodes.Last() is RTN))
+                _nodes.Add(new RTN());
 
-        public override void Link(ref int address)
-        {
-            foreach (var instruction in _instructions)
-                instruction.Link(ref address);
-        }
+            foreach (var node in _nodes)
+                instructions.AddRange(node.Compile(this));
 
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
-        {
-            foreach (var instruction in _instructions)
-            {
-                instruction.Emit(b, includeLineNumbers, includeComments);
-            }
+            return instructions;
         }
     }
 }

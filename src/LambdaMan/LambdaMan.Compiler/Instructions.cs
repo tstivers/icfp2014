@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace LambdaMan.Compiler
 {
     public abstract class Instruction : ASTNode
     {
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
+        {
+            return new List<ASTNode> { this };
+        }
     }
 
     public abstract class SimpleInstruction : Instruction
@@ -31,7 +37,7 @@ namespace LambdaMan.Compiler
     public abstract class SELInstruction : Instruction
     {
         public Symbol TrueAddress { get; set; }
-        public Symbol FalseAddress { get; set; }
+        public Symbol FalseAddress { get; set; }        
 
         public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
         {
@@ -68,17 +74,18 @@ namespace LambdaMan.Compiler
         public Constant Frame { get; set; }
         public Symbol Index { get; set; }
 
-        public LD(Constant frame, Symbol index)
+        public LD(Constant frame, Symbol index, ASTNode parent = null)
         {
             Frame = frame;
             Index = index;
+            Parent = parent;
         }
 
         public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
         {
             base.Emit(b, includeLineNumbers, includeComments);
             if (Index is Identifier)
-                Index = new Constant(FindLocalVariable(Index.ToString()));
+                Index = new Constant(FindLocal(Index.ToString()));
 
             b.AppendFormat("LD {0} {1}", Frame, Index);
             b.AppendLine();
@@ -90,17 +97,18 @@ namespace LambdaMan.Compiler
         public Constant Frame { get; set; }
         public Symbol Index { get; set; }
 
-        public ST(Constant frame, Symbol index)
+        public ST(Constant frame, Symbol index, ASTNode parent = null)
         {
             Frame = frame;
             Index = index;
+            Parent = parent;
         }
 
         public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
         {
             base.Emit(b, includeLineNumbers, includeComments);
             if (Index is Identifier)
-                Index = new Constant(FindLocalVariable(Index.ToString()));
+                Index = new Constant(FindLocal(Index.ToString()));
 
             b.AppendFormat("ST {0} {1}", Frame, Index);
             b.AppendLine();
@@ -111,9 +119,10 @@ namespace LambdaMan.Compiler
     {
         public Symbol FunctionAddress { get; set; }
 
-        public LDF(Symbol functionAddress)
+        public LDF(Symbol functionAddress, ASTNode parent = null)
         {
             FunctionAddress = functionAddress;
+            Parent = parent;
         }
 
         public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
@@ -128,19 +137,21 @@ namespace LambdaMan.Compiler
 
     public class SEL : SELInstruction
     {
-        public SEL(Symbol trueAddress, Symbol falseAddress)
+        public SEL(Symbol trueAddress, Symbol falseAddress, ASTNode parent = null)
         {
             TrueAddress = trueAddress;
             FalseAddress = falseAddress;
+            Parent = parent;
         }
     }
 
     public class TSEL : SELInstruction
     {
-        public TSEL(Symbol trueAddress, Symbol falseAddress)
+        public TSEL(Symbol trueAddress, Symbol falseAddress, ASTNode parent = null)
         {
             TrueAddress = trueAddress;
             FalseAddress = falseAddress;
+            Parent = parent;
         }
     }
 

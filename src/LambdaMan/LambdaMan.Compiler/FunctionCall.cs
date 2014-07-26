@@ -5,72 +5,36 @@ using System.Text;
 
 namespace LambdaMan.Compiler
 {
-    public class FunctionCall : ASTNode, IExpression
+    public class FunctionCall : ASTNode
     {
         public string Name { get; private set; }
 
-        public List<IExpression> Parameters { get; private set; }
-        public List<Instruction> Instructions { get; private set; }
+        public List<ASTNode> Parameters { get; private set; }        
 
-        public FunctionCall(string name, IEnumerable<IExpression> parameters)
+        public FunctionCall(string name, IEnumerable<ASTNode> parameters)
         {
             Name = name;
-            Parameters = parameters.ToList();
-            Instructions = new List<Instruction>();
+            Parameters = parameters.ToList();            
         }
 
-        public override void BuildSymbolTable(ASTNode parent)
-        {
-            base.BuildSymbolTable(parent);
-            foreach (var p in Parameters)
-                ((ASTNode)p).BuildSymbolTable(parent);
-        }
-
-        public override void Compile()
+        public override IEnumerable<ASTNode> Compile(ASTNode parent)
         {
             var f = FindFunction(Name);
+            var instructions = new List<ASTNode>();
 
             if (Parameters.Count() != f.ParameterCount)
                 throw new Exception("Argument count mismatch: " + Name);
 
             foreach (var p in Parameters)
-            {
-                ((ASTNode)p).Compile();
-                Instructions.AddRange(p.Evaluate());
-            }
+                instructions.AddRange(p.Compile(parent));
 
-            for (var i = Parameters.Count; i < f.VariableCount; i++)
-                Instructions.Add(new LDC(new Constant(0)));
+            for (var i = Parameters.Count; i < f.Locals.Count; i++)
+                instructions.Add(new LDC(new Constant(0)));
 
-            Instructions.Add(new LDF(new Identifier(f.Name)));
-            Instructions.Add(new AP(new Constant(f.VariableCount)));
+            instructions.Add(new LDF(new Identifier(f.Name, this), this));
+            instructions.Add(new AP(new Constant(f.Locals.Count)));
 
-            foreach (var i in Instructions)
-            {
-                i.BuildSymbolTable(this);
-                i.Compile();
-            }
-        }
-
-        public override void Link(ref int address)
-        {
-            foreach (var i in Instructions)
-            {
-                i.Link(ref address);
-            }
-        }
-
-        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
-        {
-            foreach (var instruction in Instructions)
-            {
-                instruction.Emit(b, includeLineNumbers, includeComments);
-            }
-        }
-
-        public IEnumerable<Instruction> Evaluate()
-        {
-            return Instructions;
+            return instructions;
         }
     }
 }

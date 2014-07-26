@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace LambdaMan.Compiler
@@ -18,10 +19,14 @@ namespace LambdaMan.Compiler
                     var b = new StringBuilder();
                     int address = 0;
                     parseResult.Result.BuildSymbolTable(null);
-                    parseResult.Result.Compile();                    
-                    parseResult.Result.Link(ref address);
+                    var instructions = parseResult.Result.Compile(null);
+                    
+                    foreach(var i in instructions)
+                        i.Link(ref address);
 
-                    parseResult.Result.Emit(b, includeLineNumbers);
+                    foreach (var i in instructions)
+                        i.Emit(b, includeLineNumbers);
+                    
                     return b.ToString();
                 }
                 
