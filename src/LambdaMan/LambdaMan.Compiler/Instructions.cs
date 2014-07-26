@@ -51,9 +51,9 @@ namespace LambdaMan.Compiler
         public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {
             if (TrueAddress is Identifier)
-                TrueAddress = new Constant(FindFunction((TrueAddress as Identifier).ToString()).Address);
+                TrueAddress = new Constant(FindSymbolByName((TrueAddress as Identifier).ToString()).Address);
             if (FalseAddress is Identifier)
-                FalseAddress = new Constant(FindFunction((FalseAddress as Identifier).ToString()).Address);
+                FalseAddress = new Constant(FindSymbolByName((FalseAddress as Identifier).ToString()).Address);
             return EmitFormat(GetType().Name, TrueAddress.ToString(), FalseAddress.ToString(), includeLineNumbers,
                 includeComments);
         }
@@ -130,7 +130,7 @@ namespace LambdaMan.Compiler
         public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
         {            
             if (FunctionAddress is Identifier)
-                FunctionAddress = new Constant(FindFunction(FunctionAddress.ToString()).Address);
+                FunctionAddress = new Constant(FindSymbolByName(FunctionAddress.ToString()).Address);
            
             return EmitFormat(GetType().Name, FunctionAddress.ToString(), String.Empty, includeLineNumbers, includeComments);
         }

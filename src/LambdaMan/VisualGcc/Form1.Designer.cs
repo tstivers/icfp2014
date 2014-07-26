@@ -35,6 +35,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.includeCommentsCheckbox = new System.Windows.Forms.CheckBox();
             this.lineNumbersCheckBox = new System.Windows.Forms.CheckBox();
+            this.breakOnExceptionCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.PropertiesSplitter)).BeginInit();
             this.PropertiesSplitter.Panel1.SuspendLayout();
             this.PropertiesSplitter.Panel2.SuspendLayout();
@@ -61,7 +62,7 @@
             // 
             this.PropertiesSplitter.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.PropertiesSplitter.Size = new System.Drawing.Size(1272, 1040);
-            this.PropertiesSplitter.SplitterDistance = 902;
+            this.PropertiesSplitter.SplitterDistance = 901;
             this.PropertiesSplitter.TabIndex = 0;
             // 
             // CodeSplitter
@@ -77,18 +78,19 @@
             // CodeSplitter.Panel2
             // 
             this.CodeSplitter.Panel2.Controls.Add(this.OutputTextBox);
-            this.CodeSplitter.Size = new System.Drawing.Size(1272, 902);
+            this.CodeSplitter.Size = new System.Drawing.Size(1272, 901);
             this.CodeSplitter.SplitterDistance = 830;
             this.CodeSplitter.TabIndex = 0;
             // 
             // InputTextBox
             // 
+            this.InputTextBox.AcceptsTab = true;
             this.InputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InputTextBox.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InputTextBox.Location = new System.Drawing.Point(0, 0);
             this.InputTextBox.Multiline = true;
             this.InputTextBox.Name = "InputTextBox";
-            this.InputTextBox.Size = new System.Drawing.Size(830, 902);
+            this.InputTextBox.Size = new System.Drawing.Size(830, 901);
             this.InputTextBox.TabIndex = 0;
             this.InputTextBox.TextChanged += new System.EventHandler(this.InputTextBox_TextChanged);
             // 
@@ -99,7 +101,7 @@
             this.OutputTextBox.Location = new System.Drawing.Point(0, 0);
             this.OutputTextBox.Multiline = true;
             this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.Size = new System.Drawing.Size(438, 902);
+            this.OutputTextBox.Size = new System.Drawing.Size(438, 901);
             this.OutputTextBox.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -107,21 +109,23 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.22013F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.77988F));
+            this.tableLayoutPanel1.Controls.Add(this.breakOnExceptionCheckbox, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.includeCommentsCheckbox, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lineNumbersCheckBox, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.89552F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.10448F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1272, 134);
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.76344F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.23656F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1272, 135);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // includeCommentsCheckbox
             // 
             this.includeCommentsCheckbox.AutoSize = true;
-            this.includeCommentsCheckbox.Location = new System.Drawing.Point(3, 31);
+            this.includeCommentsCheckbox.Location = new System.Drawing.Point(3, 34);
             this.includeCommentsCheckbox.Name = "includeCommentsCheckbox";
             this.includeCommentsCheckbox.Size = new System.Drawing.Size(113, 17);
             this.includeCommentsCheckbox.TabIndex = 1;
@@ -139,6 +143,17 @@
             this.lineNumbersCheckBox.Text = "Show Addresses";
             this.lineNumbersCheckBox.UseVisualStyleBackColor = true;
             this.lineNumbersCheckBox.CheckedChanged += new System.EventHandler(this.lineNumbersCheckBox_CheckedChanged);
+            // 
+            // breakOnExceptionCheckbox
+            // 
+            this.breakOnExceptionCheckbox.AutoSize = true;
+            this.breakOnExceptionCheckbox.Location = new System.Drawing.Point(3, 60);
+            this.breakOnExceptionCheckbox.Name = "breakOnExceptionCheckbox";
+            this.breakOnExceptionCheckbox.Size = new System.Drawing.Size(124, 17);
+            this.breakOnExceptionCheckbox.TabIndex = 2;
+            this.breakOnExceptionCheckbox.Text = "Break on Exceptions";
+            this.breakOnExceptionCheckbox.UseVisualStyleBackColor = true;
+            this.breakOnExceptionCheckbox.CheckedChanged += new System.EventHandler(this.breakOnExceptionCheckbox_CheckedChanged);
             // 
             // VisualGccForm
             // 
@@ -175,6 +190,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox lineNumbersCheckBox;
         private System.Windows.Forms.CheckBox includeCommentsCheckbox;
+        private System.Windows.Forms.CheckBox breakOnExceptionCheckbox;
     }
 }
 

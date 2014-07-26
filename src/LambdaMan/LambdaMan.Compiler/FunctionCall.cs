@@ -18,8 +18,8 @@ namespace LambdaMan.Compiler
         }
 
         public override IEnumerable<Instruction> Compile(ASTNode parent)
-        {
-            var f = FindFunction(Name);
+        {            
+            var f = parent.FindSymbolByName(Name) as Function;
             var instructions = new List<Instruction>();
 
             if (Parameters.Count() != f.ParameterCount)
@@ -31,7 +31,7 @@ namespace LambdaMan.Compiler
             for (var i = Parameters.Count; i < f.Locals.Count; i++)
                 instructions.Add(new LDC(new Constant(0)));
 
-            instructions.Add(new LDF(new Identifier(f.Name, this), this));
+            instructions.Add(new LDF(new Identifier(f.Name, parent), parent));
             instructions.Add(new AP(new Constant(f.Locals.Count)));
             instructions.Last().Comment = "call function " + Name;
 

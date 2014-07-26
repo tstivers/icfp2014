@@ -17,6 +17,7 @@ namespace LambdaMan.Compiler
         public GccProgram(IEnumerable<ASTNode> nodes)
         {
             _nodes = nodes;
+            TempCount = 0;
         }
 
         public override void BuildSymbolTable(ASTNode parent)

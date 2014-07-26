@@ -71,6 +71,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Gcc.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="IfStatement.cs" />
+    <Compile Include="IndexExpression.cs" />
     <Compile Include="OperatorExpression.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="FunctionCall.cs" />

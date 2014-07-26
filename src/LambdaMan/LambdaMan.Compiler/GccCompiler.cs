@@ -6,7 +6,7 @@ namespace LambdaMan.Compiler
 {
     public class GccCompiler
     {
-        public string Compile(string input, bool includeLineNumbers = false, bool includeComments = false)
+        public string Compile(string input, bool includeLineNumbers = false, bool includeComments = false, bool breakOnExceptions = false)
         {
             var parser = new Parser();
 
@@ -34,7 +34,10 @@ namespace LambdaMan.Compiler
             }
             catch (Exception e)
             {
-                return e.Message;
+                if (!breakOnExceptions)
+                    return e.Message;
+
+                throw;
             }            
         }
     }

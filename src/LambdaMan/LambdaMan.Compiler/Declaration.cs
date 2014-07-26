@@ -32,7 +32,7 @@ namespace LambdaMan.Compiler
 
         public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
-            return EmptyNodeList;
+            return EmptyInstructionList;
         }
 
         public override void Link(ref int address)

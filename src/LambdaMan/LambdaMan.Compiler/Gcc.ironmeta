@@ -17,7 +17,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    GccProgram = Node+:nodes -> { return new GccProgram(nodes.Results); };
 
-   Node = (Assignment | Declaration | Instruction | Function | FunctionCall) EOL+;
+   Node = (Assignment | Declaration | Instruction | IfStatement | Function | FunctionCall) EOL+;
 
    Constant = ['0'-'9']+:n -> { return new Constant(int.Parse(Input(n))); };
 
@@ -82,5 +82,10 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results); };
 
    OperatorExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
+   
    // does not work ParensExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
+
+   // IndexExpression = Ident:name '[' Expression:i ']' -> { return new IndexExpression(Input(name), i); };
+
+   IfStatement = "if" WT+ '(' Expression:c ')' (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new IfStatement(c, nodes.Results); };
 }

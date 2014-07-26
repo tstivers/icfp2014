@@ -61,6 +61,10 @@ namespace LambdaMan.Compiler
             _firstInstruction = instructions.First();
             _firstInstruction.Comment = String.Format("function {0}({1})", Name, String.Join(", ", Locals.Take(ParameterCount)));
             instructions.Last().Comment = String.Format("end function {0}", Name);
+
+            foreach (var node in _nodes.Where(x => x is IPostCompileNeeded).Cast<IPostCompileNeeded>())
+                instructions.AddRange(node.PostCompile(this));
+
             return instructions;
         }
     }

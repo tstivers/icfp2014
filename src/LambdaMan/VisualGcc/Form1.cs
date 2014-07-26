@@ -16,7 +16,7 @@ namespace VisualGcc
         {
             var compiler = new GccCompiler();
 
-            OutputTextBox.Text = compiler.Compile(InputTextBox.Text, lineNumbersCheckBox.Checked, includeCommentsCheckbox.Checked);
+            OutputTextBox.Text = compiler.Compile(InputTextBox.Text, lineNumbersCheckBox.Checked, includeCommentsCheckbox.Checked, breakOnExceptionCheckbox.Checked);
         }
 
         private void lineNumbersCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -37,6 +37,11 @@ namespace VisualGcc
         }
 
         private void includeCommentsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            InputTextBox_TextChanged(sender, e);
+        }
+
+        private void breakOnExceptionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             InputTextBox_TextChanged(sender, e);
         }

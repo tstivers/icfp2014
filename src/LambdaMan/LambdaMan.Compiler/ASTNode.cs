@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace LambdaMan.Compiler
@@ -10,14 +11,16 @@ namespace LambdaMan.Compiler
 
         public string Comment { get; set; }
 
-        protected static readonly IEnumerable<Instruction> EmptyNodeList = new List<Instruction>();
+        protected static readonly IEnumerable<Instruction> EmptyInstructionList = new List<Instruction>();
+
+        protected static int TempCount = 0;
 
         public virtual Dictionary<string, ASTNode> Symbols
         {
             get { return Parent.Symbols; }
         }
 
-        public Function FindFunction(string name)
+        public ASTNode FindSymbolByName(string name)
         {
             ASTNode node = null;
             ASTNode scope = this;
@@ -27,12 +30,12 @@ namespace LambdaMan.Compiler
                 if (!scope.Symbols.TryGetValue(name, out node))
                     scope = scope.Parent;
 
-            } while (node == null && scope != null);
+            } while (node == null && scope != null);            
 
-            if (!(node is Function))
-                throw new Exception("Unable to find function: " + name);
+            if (node == null)
+                throw new Exception("Unable to find symbol: " + name);
 
-            return node as Function;
+            return node;
         }
 
         public int FindLocal(string name)
@@ -62,5 +65,10 @@ namespace LambdaMan.Compiler
         {
             Parent = parent;
         }        
+    }
+
+    public interface IPostCompileNeeded
+    {
+        IEnumerable<Instruction> PostCompile(ASTNode parent);
     }
 }

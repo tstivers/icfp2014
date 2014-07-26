@@ -1,0 +1,36 @@
+function startup()
+{
+	LDC 0
+	LDF main
+	CONS
+}
+
+function main(state, world)
+{
+	process(state, world)
+	finish(state)	
+}
+
+function process(state, world)
+{
+	player_x = world
+	player_y = world
+	debug(player_x)
+	debug(player_y)
+}
+
+function debug(x)
+{
+	LD 0 x
+	DBUG
+}
+
+function finish(state)
+{
+	LD 0 state
+	LDC 1
+	ADD
+	LDC 3
+	CONS
+}	
+
