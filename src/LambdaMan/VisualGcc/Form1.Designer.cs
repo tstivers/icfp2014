@@ -94,7 +94,7 @@
             // OutputTextBox
             // 
             this.OutputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.OutputTextBox.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OutputTextBox.Location = new System.Drawing.Point(0, 0);
             this.OutputTextBox.Multiline = true;
             this.OutputTextBox.Name = "OutputTextBox";
@@ -135,6 +135,8 @@
             this.Controls.Add(this.PropertiesSplitter);
             this.Name = "VisualGccForm";
             this.Text = "VisualGcc";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VisualGccForm_FormClosing);
+            this.Load += new System.EventHandler(this.VisualGccForm_Load);
             this.PropertiesSplitter.Panel1.ResumeLayout(false);
             this.PropertiesSplitter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PropertiesSplitter)).EndInit();

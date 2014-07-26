@@ -18,8 +18,8 @@ namespace LambdaMan.Compiler
                     var b = new StringBuilder();
                     int address = 0;
                     parseResult.Result.BuildSymbolTable(null);
-                    parseResult.Result.Compile(ref address);
-                    parseResult.Result.Link();
+                    parseResult.Result.Compile();                    
+                    parseResult.Result.Link(ref address);
 
                     parseResult.Result.Emit(b, includeLineNumbers);
                     return b.ToString();
@@ -30,9 +30,7 @@ namespace LambdaMan.Compiler
             catch (Exception e)
             {
                 return e.Message;
-            }
-
-            return String.Empty;
+            }            
         }
     }
 }

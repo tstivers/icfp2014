@@ -38,7 +38,8 @@
       <Private>True</Private>
       <HintPath>..\packages\IronMeta.3.7.5318.19923\lib\net45\IronMeta.Matcher.dll</HintPath>
     </Reference>
-    <Reference Include="IronMeta.VSPackage">
+    <Reference Include="IronMeta.VSPackage, Version=3.7.5318.19923, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IronMeta.3.7.5318.19923\lib\net45\IronMeta.VSPackage.exe</HintPath>
     </Reference>
     <Reference Include="IronMeta.VSPlugin, Version=3.7.5318.19919, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
@@ -62,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="FunctionCall.cs" />
     <Compile Include="Gcc.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -69,7 +73,9 @@
     </Compile>
     <Compile Include="GccCompiler.cs" />
     <Compile Include="GccProgram.cs" />
+    <Compile Include="Instructions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Symbols.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Gcc.ironmeta">

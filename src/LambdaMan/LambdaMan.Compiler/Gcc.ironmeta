@@ -10,11 +10,14 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    KET = '}';
    EOL = WT* (';' | '\n' | '\r') WT*;
    WT = (' ' | '\t');
+   PLUS = '+';
 
    Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
    Comment = "/*" (~"*/" .)* "*/";
 
-   GccProgram = Instruction+:instructions -> { return new GccProgram(instructions.Results); };
+   GccProgram = Node+:nodes -> { return new GccProgram(nodes.Results); };
+
+   Node = (Instruction | Function | FunctionCall) EOL+;
 
    Constant = ['0'-'9']+:n -> { return new Constant(int.Parse(Input(n))); };
 
@@ -64,9 +67,13 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    DBUG = "DBUG" -> { return new DBUG(); };
    BRK = "BRK" -> { return new BRK(); };
 
-   Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK | Function | FunctionCall) EOL+;
+   Expression = EqualsExpression | FunctionCall | Symbol ;
 
-   Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:ident WT* ")" (WT | EOL)* BRA (WT | EOL)* Instruction*:instructions (WT | EOL)* KET -> { return new Function(Input(name), instructions.Results, ident != null ? ident.Results.Cast<Identifier>() : null); };
+   Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
-   FunctionCall = Ident:name WT* "(" (WT* Constant ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results.Cast<Constant>()); };
+   Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:parameters WT* ")" (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new Function(Input(name), nodes.Results, parameters.Results.Cast<Identifier>()); };
+
+   FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results.Cast<IExpression>()); };
+
+   EqualsExpression = Expression:l WS* "==" WS* Expression:r -> { return new EqualsExpression((IExpression)((ASTNode)l), (IExpression)((ASTNode)r)); };
 }
