@@ -67,7 +67,9 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    DBUG = "DBUG" -> { return new DBUG(); };
    BRK = "BRK" -> { return new BRK(); };
 
-   Expression = EqualsExpression | FunctionCall | Symbol ;
+   Operator = "==" | "+" | "-" | "/" | "*" | "<" | "<=" | ">" | ">=";
+
+   Expression = OperatorExpression | FunctionCall | Symbol ;
 
    Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
@@ -75,5 +77,6 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results.Cast<IExpression>()); };
 
-   EqualsExpression = Expression:l WS* "==" WS* Expression:r -> { return new EqualsExpression((IExpression)((ASTNode)l), (IExpression)((ASTNode)r)); };
+   OperatorExpression = WS* Expression:l WS* Operator:op WS* Expression:r WS* -> { return new OperatorExpression((IExpression)((ASTNode)l), Input(op), (IExpression)((ASTNode)r)); };
+   ParensExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((IExpression)((ASTNode)l), Input(op), (IExpression)((ASTNode)r)); };
 }

@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Expressions.cs" />
+    <Compile Include="OperatorExpression.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="FunctionCall.cs" />
     <Compile Include="Gcc.g.cs">
