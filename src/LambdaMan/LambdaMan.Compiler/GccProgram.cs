@@ -1,12 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using IronMeta.AST;
 
 namespace LambdaMan.Compiler
 {
-    public class ASTNode
+    public abstract class ASTNode
     {
+        public virtual ASTNode Parent { get; set; }
 
+        public virtual Dictionary<string, ASTNode> Symbols
+        {
+            get { return Parent.Symbols; }
+        }
+
+        public Function FindFunction(string name)
+        {
+            ASTNode node = null;
+            ASTNode scope = this;
+
+            do
+            {
+                if (!scope.Symbols.TryGetValue(name, out node))
+                    scope = scope.Parent;
+
+            } while (node == null && scope != null);
+                
+            if (node == null || !(node is Function))
+                throw new Exception("Unableo to find function: " + name);
+
+            return node as Function;        
+        }
+
+        public Tuple<int, int> FindLocalVariable(string name)
+        {
+            return null;
+        }
+
+        public virtual int Address { get; set; }
+
+        public virtual void Compile(ref int address)
+        {
+            Address = address;
+            address++;
+        }
+
+        public virtual void Link()
+        {
+        }
+
+        public virtual void BuildSymbolTable(ASTNode parent)
+        {
+            Parent = parent;
+        }
+
+        public virtual void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            if (includeLineNumbers)
+                b.AppendFormat("[{0,5}] ", Address);
+        }
+    }
+
+    public class SimpleInstruction : Instruction
+    {
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            b.AppendLine(GetType().Name);
+        }
     }
 
     public class Instruction : ASTNode
@@ -20,6 +83,7 @@ namespace LambdaMan.Compiler
     public class Identifier : Symbol
     {
         public string Name { get; set; }
+
         public Identifier(string name)
         {
             Name = name;
@@ -27,7 +91,7 @@ namespace LambdaMan.Compiler
 
         public override string ToString()
         {
-            return ":" + Name;
+            return Name;
         }
     }
 
@@ -48,8 +112,9 @@ namespace LambdaMan.Compiler
 
     public class LDC : Instruction
     {
-        public Symbol Constant { get; set; }
-        public LDC(Symbol constant)
+        public Constant Constant { get; set; }
+
+        public LDC(Constant constant)
         {
             Constant = constant;
         }
@@ -58,14 +123,21 @@ namespace LambdaMan.Compiler
         {
             return String.Format("LDC {0}", Constant);
         }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            b.AppendFormat("LDC {0}", Constant);
+            b.AppendLine();
+        }
     }
 
     public class LD : Instruction
     {
-        public Symbol Frame { get; set; }
+        public Constant Frame { get; set; }
         public Symbol Index { get; set; }
 
-        public LD(Symbol frame, Symbol index)
+        public LD(Constant frame, Symbol index)
         {
             Frame = frame;
             Index = index;
@@ -75,9 +147,32 @@ namespace LambdaMan.Compiler
         {
             return String.Format("LD {0} {1}", Frame, Index);
         }
+
+        public override void Link()
+        {
+            base.Link();
+            if (Index is Identifier)
+            {
+                ASTNode node = null;
+                if (!Symbols.TryGetValue(Index.ToString(), out node) || !(node is Function))
+                    throw new Exception("Unable to find symbol: " + Index);
+
+                var f = node as Function;
+
+
+                Index = new Constant(f.Parameters.FindIndex(x => x.Name == Index.ToString()));
+            }
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            b.AppendFormat("LD {0} {1}", Frame, Index);
+            b.AppendLine();
+        }
     }
 
-    public class ADD : Instruction
+    public class ADD : SimpleInstruction
     {
         public override string ToString()
         {
@@ -85,21 +180,23 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class SUB : Instruction
+    public class SUB : SimpleInstruction
     {
         public override string ToString()
         {
             return "SUB";
         }
     }
-    public class MUL : Instruction
+
+    public class MUL : SimpleInstruction
     {
         public override string ToString()
         {
             return "MUL";
         }
     }
-    public class DIV : Instruction
+
+    public class DIV : SimpleInstruction
     {
         public override string ToString()
         {
@@ -107,7 +204,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CEQ : Instruction
+    public class CEQ : SimpleInstruction
     {
         public override string ToString()
         {
@@ -115,7 +212,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CGT : Instruction
+    public class CGT : SimpleInstruction
     {
         public override string ToString()
         {
@@ -123,7 +220,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CGTE : Instruction
+    public class CGTE : SimpleInstruction
     {
         public override string ToString()
         {
@@ -131,7 +228,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class ATOM : Instruction
+    public class ATOM : SimpleInstruction
     {
         public override string ToString()
         {
@@ -139,7 +236,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CONS : Instruction
+    public class CONS : SimpleInstruction
     {
         public override string ToString()
         {
@@ -147,7 +244,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CAR : Instruction
+    public class CAR : SimpleInstruction
     {
         public override string ToString()
         {
@@ -155,7 +252,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class CDR : Instruction
+    public class CDR : SimpleInstruction
     {
         public override string ToString()
         {
@@ -180,7 +277,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class JOIN : Instruction
+    public class JOIN : SimpleInstruction
     {
         public override string ToString()
         {
@@ -190,15 +287,32 @@ namespace LambdaMan.Compiler
 
     public class LDF : Instruction
     {
-        public Symbol Address { get; set; }
-        public LDF(Symbol address)
+        public Symbol FunctionAddress { get; set; }
+
+        public LDF(Symbol functionAddress)
         {
-            Address = address;
+            FunctionAddress = functionAddress;
         }
 
         public override string ToString()
         {
-            return String.Format("LDF {0}", Address);
+            return String.Format("LDF {0}", FunctionAddress);
+        }
+
+        public override void Link()
+        {
+            base.Link();
+            if (FunctionAddress is Identifier)
+            {                
+                FunctionAddress = new Constant(FindFunction(FunctionAddress.ToString()).Address);
+            }
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            b.AppendFormat("LDF {0}", FunctionAddress);
+            b.AppendLine();
         }
     }
 
@@ -215,9 +329,16 @@ namespace LambdaMan.Compiler
         {
             return String.Format("AP {0}", NumArguments);
         }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            base.Emit(b, includeLineNumbers, includeComments);
+            b.AppendFormat("AP {0}", NumArguments.Value);
+            b.AppendLine();
+        }
     }
 
-    public class RTN : Instruction
+    public class RTN : SimpleInstruction
     {
         public override string ToString()
         {
@@ -255,7 +376,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class STOP : Instruction
+    public class STOP : SimpleInstruction
     {
         public override string ToString()
         {
@@ -310,7 +431,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class DBUG : Instruction
+    public class DBUG : SimpleInstruction
     {
         public override string ToString()
         {
@@ -318,7 +439,7 @@ namespace LambdaMan.Compiler
         }
     }
 
-    public class BRK : Instruction
+    public class BRK : SimpleInstruction
     {
         public override string ToString()
         {
@@ -326,10 +447,138 @@ namespace LambdaMan.Compiler
         }
     }
 
+    public class Function : ASTNode
+    {
+        private readonly Dictionary<string, ASTNode> _symbols = new Dictionary<string, ASTNode>();
+
+        public override Dictionary<string, ASTNode> Symbols
+        {
+            get { return _symbols; }
+        }
+
+        public override int Address
+        {
+            get { return _instructions[0].Address; }
+        }
+
+        public string Name { get; set; }
+
+        private readonly List<ASTNode> _instructions;
+        public List<Identifier> Parameters { get; private set; }
+
+        public Function(string name, IEnumerable<ASTNode> instructions, IEnumerable<Identifier> parameters)
+        {
+            Name = name;
+            _instructions = instructions.ToList();
+            Parameters = parameters.ToList();
+        }
+
+        public override void BuildSymbolTable(ASTNode parent)
+        {
+            base.BuildSymbolTable(parent);
+            parent.Symbols[Name] = this;
+
+            foreach (var p in Parameters)
+                Symbols[p.Name] = this;
+
+            foreach (var instruction in _instructions)
+                instruction.BuildSymbolTable(this);
+        }
+
+        public override void Compile(ref int address)
+        {
+
+            if (!(_instructions.Last() is RTN))
+                _instructions.Add(new RTN());
+
+            foreach (var instruction in _instructions)
+            {
+                instruction.Compile(ref address);                
+            }
+        }
+
+        public override void Link()
+        {
+            foreach (var instruction in _instructions)
+                instruction.Link();
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            foreach (var instruction in _instructions)
+            {
+                instruction.Emit(b, includeLineNumbers, includeComments);                
+            }
+        }
+    }
+
+    public class FunctionCall : ASTNode
+    {
+        public string Name { get; private set; }
+
+        public List<Constant> Parameters { get; private set; }
+        public List<Instruction> Instructions { get; private set; }
+
+        public FunctionCall(string name, IEnumerable<Constant> parameters)
+        {
+            Name = name;
+            Parameters = parameters.ToList();
+            Instructions = new List<Instruction>();
+        }
+
+        public override void Compile(ref int address)
+        {
+            ASTNode node = null;
+
+            var f = FindFunction(Name);
+
+            if (Parameters.Count() != f.Parameters.Count())
+                throw new Exception("Argument count mismatch: " + Name);
+
+            Instructions.Add(new LDF(new Identifier(f.Name)));
+
+            foreach (var p in Parameters)
+            {
+                Instructions.Add(new LDC(p));
+            }
+
+            Instructions.Add(new AP(new Constant(Parameters.Count())));
+
+            foreach (var i in Instructions)
+            {
+                i.BuildSymbolTable(this);
+                i.Compile(ref address);                
+            }
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers = false, bool includeComments = false)
+        {
+            foreach (var instruction in Instructions)
+            {
+                instruction.Emit(b, includeLineNumbers, includeComments);                
+            }
+        }
+
+        public override void Link()
+        {
+            base.Link();
+            foreach(var i in Instructions)
+                i.Link();
+        }
+    }
+
     public class GccProgram : ASTNode
     {
-        private IEnumerable<Instruction> _instructions;
-        public GccProgram(IEnumerable<Instruction> instructions)
+        private readonly Dictionary<string, ASTNode> _symbols = new Dictionary<string, ASTNode>();
+
+        public override Dictionary<string, ASTNode> Symbols
+        {
+            get { return _symbols; }
+        }
+
+        private readonly IEnumerable<ASTNode> _instructions;
+
+        public GccProgram(IEnumerable<ASTNode> instructions)
         {
             _instructions = instructions;
         }
@@ -347,6 +596,40 @@ namespace LambdaMan.Compiler
             }
 
             return builder.ToString();
+        }
+
+        public override void BuildSymbolTable(ASTNode parent)
+        {
+            base.BuildSymbolTable(parent);
+
+            foreach (var instruction in _instructions)
+            {
+                instruction.BuildSymbolTable(this);
+            }
+        }
+
+        public override void Compile(ref int address)
+        {            
+            foreach (var instruction in _instructions)
+            {                
+                instruction.Compile(ref address);                
+            }
+        }
+
+        public override void Link()
+        {
+            base.Link();
+
+            foreach (var instruction in _instructions)
+                instruction.Link();
+        }
+
+        public override void Emit(StringBuilder b, bool includeLineNumbers, bool includeComments)
+        {
+            foreach (var instruction in _instructions)
+            {
+                instruction.Emit(b, includeLineNumbers, includeComments);                
+            }
         }
     }
 }

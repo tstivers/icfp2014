@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LambdaMan.Compiler
 {
     public class GccCompiler
     {
-        public string Compile(string input)
+        public string Compile(string input, bool includeLineNumbers = false)
         {
             var parser = new Parser();
 
@@ -17,8 +14,18 @@ namespace LambdaMan.Compiler
                 var parseResult = parser.GetMatch(input, parser.GccProgram);
 
                 if (parseResult.Success)
-                    return parseResult.Result.ToString();
-                return parseResult.Error;                
+                {
+                    var b = new StringBuilder();
+                    int address = 0;
+                    parseResult.Result.BuildSymbolTable(null);
+                    parseResult.Result.Compile(ref address);
+                    parseResult.Result.Link();
+
+                    parseResult.Result.Emit(b, includeLineNumbers);
+                    return b.ToString();
+                }
+                
+                return parseResult.Error;
             }
             catch (Exception e)
             {

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LambdaMan.Compiler;
+using System;
 using System.Windows.Forms;
-using LambdaMan.Compiler;
 
 namespace VisualGcc
 {
@@ -22,7 +15,12 @@ namespace VisualGcc
         {
             var compiler = new GccCompiler();
 
-            OutputTextBox.Text = compiler.Compile(InputTextBox.Text);
+            OutputTextBox.Text = compiler.Compile(InputTextBox.Text, lineNumbersCheckBox.Checked);
+        }
+
+        private void lineNumbersCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            InputTextBox_TextChanged(sender, e);
         }
     }
 }

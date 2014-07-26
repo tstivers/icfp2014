@@ -6,26 +6,28 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    SEMI = ';' SP;
    SP = (WS | Comment)*;
    WS = ' ' | '\n' | '\r' | '\t';
-   BRA = '{' SP;
-   KET = '}' SP;
+   BRA = '{';
+   KET = '}';
+   EOL = WT* (';' | '\n' | '\r') WT*;
+   WT = (' ' | '\t');
 
    Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
    Comment = "/*" (~"*/" .)* "*/";
 
-   GccProgram = Instruction+:instructions -> { return new GccProgram(instructions.Results.Select(x => x as Instruction)); };
+   GccProgram = Instruction+:instructions -> { return new GccProgram(instructions.Results); };
 
-   Constant = ['0'-'9']+:n SP -> { return new Constant(int.Parse(Input(n))); };
+   Constant = ['0'-'9']+:n -> { return new Constant(int.Parse(Input(n))); };
 
-   Identifier = Ident:id SP -> { return id; };
+   Identifier = Ident:id -> { return id; };
    Ident = (IdentBegin IdentBody*):id -> { return new Identifier(Input(id)); };
    IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
-   IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
+   IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));   
 
    Symbol = Constant | Identifier;
 
-   LDC = "LDC" SP Constant:c -> { return new LDC((Symbol)((ASTNode)c)); };
+   LDC = "LDC" WT+ Constant:c -> { return new LDC((Constant)((ASTNode)c)); };
 
-   LD = "LD" SP Constant:n SP Constant:i -> { return new LD((Symbol)((ASTNode)n), (Symbol)((ASTNode)i)); };
+   LD = "LD" WT+ Constant:n WT+ Symbol:i -> { return new LD((Constant)((ASTNode)n), (Symbol)((ASTNode)i)); };
 
    ADD = "ADD" -> { return new ADD(); };
    SUB = "SUB" -> { return new SUB(); };
@@ -42,25 +44,29 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    CAR = "CAR" -> { return new CAR(); };
    CDR = "CDR" -> { return new CDR(); };
 
-   SEL = "SEL" SP Symbol:trueAddress SP Symbol:falseAddress -> { return new SEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
+   SEL = "SEL" WT+ Symbol:trueAddress WT+ Symbol:falseAddress -> { return new SEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
    JOIN = "JOIN" -> { return new JOIN(); };
 
-   LDF = "LDF" SP Symbol:address -> { return new LDF((Symbol)((ASTNode)address)); };
+   LDF = "LDF" WT+ Symbol:address -> { return new LDF((Symbol)((ASTNode)address)); };
 
-   AP = "AP" SP Constant:n -> { return new AP((Constant)((ASTNode)n)); };
+   AP = "AP" WT+ Constant:n -> { return new AP((Constant)((ASTNode)n)); };
    RTN = "RTN" -> { return new RTN(); };
 
-   DUM = "DUM" SP Constant:n -> { return new DUM((Constant)((ASTNode)n)); };
-   RAP = "RAP" SP Constant:n -> { return new RAP((Constant)((ASTNode)n)); };
+   DUM = "DUM" WT+ Constant:n -> { return new DUM((Constant)((ASTNode)n)); };
+   RAP = "RAP" WT+ Constant:n -> { return new RAP((Constant)((ASTNode)n)); };
    
    STOP = "STOP" -> { return new STOP(); };
 
-   TSEL = "TSEL" SP Symbol:trueAddress SP Symbol:falseAddress -> { return new TSEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
-   TAP = "TAP" SP Constant:n -> { return new TAP((Constant)((ASTNode)n)); };
-   TRAP = "TRAP" SP Constant:n -> { return new TRAP((Constant)((ASTNode)n)); };
+   TSEL = "TSEL" WT+ Symbol:trueAddress WT+ Symbol:falseAddress -> { return new TSEL((Symbol)((ASTNode)trueAddress), (Symbol)((ASTNode)falseAddress)); };
+   TAP = "TAP" WT+ Constant:n -> { return new TAP((Constant)((ASTNode)n)); };
+   TRAP = "TRAP" WT+ Constant:n -> { return new TRAP((Constant)((ASTNode)n)); };
 
    DBUG = "DBUG" -> { return new DBUG(); };
    BRK = "BRK" -> { return new BRK(); };
 
-   Instruction = (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK) SP;
+   Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK | Function | FunctionCall) EOL+;
+
+   Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:ident WT* ")" (WT | EOL)* BRA (WT | EOL)* Instruction*:instructions (WT | EOL)* KET -> { return new Function(Input(name), instructions.Results, ident != null ? ident.Results.Cast<Identifier>() : null); };
+
+   FunctionCall = Ident:name WT* "(" (WT* Constant ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results.Cast<Constant>()); };
 }
