@@ -31,6 +31,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    LDC = "LDC" WT+ Constant:c -> { return new LDC((Constant)((ASTNode)c)); };
 
    LD = "LD" WT+ Constant:n WT+ Symbol:i -> { return new LD((Constant)((ASTNode)n), (Symbol)((ASTNode)i)); };
+   ST = "ST" WT+ Constant:n WT+ Symbol:i -> { return new ST((Constant)((ASTNode)n), (Symbol)((ASTNode)i)); };
 
    ADD = "ADD" -> { return new ADD(); };
    SUB = "SUB" -> { return new SUB(); };
@@ -75,7 +76,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    Expression = OperatorExpression | FunctionCall | Symbol;
 
-   Instruction = WT* (LDC | LD | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
+   Instruction = WT* (LDC | LD | ST | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
    Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:parameters WT* ")" (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new Function(Input(name), nodes.Results, parameters.Results.Cast<Identifier>()); };
 
@@ -87,5 +88,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    // IndexExpression = Ident:name '[' Expression:i ']' -> { return new IndexExpression(Input(name), i); };
 
-   IfStatement = "if" WT+ '(' Expression:c ')' (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new IfStatement(c, nodes.Results); };
+   Block = (WT | EOL)* BRA (WT | EOL)* Node* (WT | EOL)* KET;
+
+   IfStatement = "if" WT+ '(' Expression:c ')' Block:trueNodes ((WT | EOL)* "else" Block)?:falseNodes -> { return new IfStatement(c, trueNodes.Results, falseNodes.Results); };
 }

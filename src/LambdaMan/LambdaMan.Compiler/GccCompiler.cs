@@ -9,6 +9,7 @@ namespace LambdaMan.Compiler
         public string Compile(string input, bool includeLineNumbers = false, bool includeComments = false, bool breakOnExceptions = false)
         {
             var parser = new Parser();
+            input += Environment.NewLine;
 
             try
             {

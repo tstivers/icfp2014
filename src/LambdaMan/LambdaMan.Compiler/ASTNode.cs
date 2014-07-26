@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace LambdaMan.Compiler
 {
@@ -30,7 +28,7 @@ namespace LambdaMan.Compiler
                 if (!scope.Symbols.TryGetValue(name, out node))
                     scope = scope.Parent;
 
-            } while (node == null && scope != null);            
+            } while (node == null && scope != null);
 
             if (node == null)
                 throw new Exception("Unable to find symbol: " + name);
@@ -50,7 +48,7 @@ namespace LambdaMan.Compiler
 
         public virtual int Address { get; set; }
 
-        public abstract IEnumerable<Instruction> Compile(ASTNode parent);      
+        public abstract IEnumerable<Instruction> Compile(ASTNode parent);
 
         public virtual void Link(ref int address)
         {
@@ -64,7 +62,13 @@ namespace LambdaMan.Compiler
         public virtual void BuildSymbolTable(ASTNode parent)
         {
             Parent = parent;
-        }        
+        }
+
+        public void SetParents(IEnumerable<ASTNode> children)
+        {
+            foreach (var c in children)
+                c.Parent = this;
+        }
     }
 
     public interface IPostCompileNeeded

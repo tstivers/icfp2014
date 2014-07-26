@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LambdaMan.Compiler
 {
@@ -58,7 +57,6 @@ namespace LambdaMan.Compiler
                 includeComments);
         }
     }
-
 
     public class LDC : Instruction
     {
@@ -128,10 +126,10 @@ namespace LambdaMan.Compiler
         }
 
         public override string Emit(bool includeLineNumbers = false, bool includeComments = false)
-        {            
+        {
             if (FunctionAddress is Identifier)
                 FunctionAddress = new Constant(FindSymbolByName(FunctionAddress.ToString()).Address);
-           
+
             return EmitFormat(GetType().Name, FunctionAddress.ToString(), String.Empty, includeLineNumbers, includeComments);
         }
     }

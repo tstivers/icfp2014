@@ -32,6 +32,7 @@ namespace LambdaMan.Compiler
         {
             Name = name;
             _nodes = nodes.ToList();
+            SetParents(_nodes);
             Locals = parameters.Select(x => x.Name).ToList();
             ParameterCount = Locals.Count;
         }

@@ -17,6 +17,7 @@ namespace LambdaMan.Compiler
         public GccProgram(IEnumerable<ASTNode> nodes)
         {
             _nodes = nodes;
+            SetParents(_nodes);
             TempCount = 0;
         }
 

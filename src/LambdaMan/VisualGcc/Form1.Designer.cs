@@ -90,9 +90,11 @@
             this.InputTextBox.Location = new System.Drawing.Point(0, 0);
             this.InputTextBox.Multiline = true;
             this.InputTextBox.Name = "InputTextBox";
+            this.InputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.InputTextBox.Size = new System.Drawing.Size(830, 901);
             this.InputTextBox.TabIndex = 0;
             this.InputTextBox.TextChanged += new System.EventHandler(this.InputTextBox_TextChanged);
+            this.InputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTextBox_KeyDown);
             // 
             // OutputTextBox
             // 
@@ -101,8 +103,11 @@
             this.OutputTextBox.Location = new System.Drawing.Point(0, 0);
             this.OutputTextBox.Multiline = true;
             this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.OutputTextBox.Size = new System.Drawing.Size(438, 901);
             this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.Enter += new System.EventHandler(this.OutputTextBox_Enter);
             // 
             // tableLayoutPanel1
             // 

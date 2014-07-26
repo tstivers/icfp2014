@@ -45,5 +45,16 @@ namespace VisualGcc
         {
             InputTextBox_TextChanged(sender, e);
         }
+
+        private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control & e.KeyCode == Keys.A)
+                InputTextBox.SelectAll();
+        }
+
+        private void OutputTextBox_Enter(object sender, EventArgs e)
+        {
+            Clipboard.SetText(OutputTextBox.Text);
+        }
     }
 }
