@@ -14,7 +14,7 @@ namespace LambdaMan.Compiler
 
         protected string EmitFormat(string opcode, string arg1, string arg2, bool includeLineNumbers = false, bool includeComments = false)
         {
-            return String.Format("{0}{1,-5}{2,-3}{3,-3}{4}",
+            return String.Format("{0}{1,-5}{2,-5}{3,-5}{4}",
                 includeLineNumbers ? String.Format("[{0,4}] ", Address) : String.Empty,
                 opcode,
                 arg1,

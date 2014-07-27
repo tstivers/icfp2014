@@ -53,11 +53,11 @@ namespace LambdaMan.Compiler
         {
             var instructions = new List<Instruction>();
 
-            if (!(_nodes.Last() is RTN))
-                _nodes.Add(new RTN());
-
             foreach (var node in _nodes)
                 instructions.AddRange(node.Compile(this));
+            
+            if (!(instructions.Any()) || !(instructions.Last() is RTN))
+                instructions.Add(new RTN());
 
             _firstInstruction = instructions.First();
             _firstInstruction.Comment = String.Format("function {0}({1})", Name, String.Join(", ", Locals.Take(ParameterCount)));

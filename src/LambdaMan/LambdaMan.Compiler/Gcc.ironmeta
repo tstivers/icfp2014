@@ -17,7 +17,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    GccProgram = Node+:nodes -> { return new GccProgram(nodes.Results); };
 
-   Node = (Assignment | Declaration | Instruction | IfStatement | Function | FunctionCall) EOL+;
+   Node = (Return | Assignment | Declaration | Instruction | TIfStatement | IfStatement | Function | TFunctionCall | FunctionCall) EOL+;
 
    Constant = ['0'-'9']+:n -> { return new Constant(int.Parse(Input(n))); };
 
@@ -74,13 +74,14 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    Assignment = Ident:name WT+ "=" WT+ Expression:e -> { return new Assignment(Input(name), (ASTNode)e); };
 
-   Expression = OperatorExpression | FunctionCall | Symbol;
+   Expression = OperatorExpression | PostfixOp | TFunctionCall | FunctionCall | Symbol;
 
    Instruction = WT* (LDC | LD | ST | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
    Function = "function" WT+ Ident:name WT* "(" (WT* Ident ','?)*:parameters WT* ")" (WT | EOL)* BRA (WT | EOL)* Node*:nodes (WT | EOL)* KET -> { return new Function(Input(name), nodes.Results, parameters.Results.Cast<Identifier>()); };
 
    FunctionCall = Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new FunctionCall(Input(name), parameters.Results); };
+   TFunctionCall = '@'Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new TFunctionCall(Input(name), parameters.Results); };
 
    OperatorExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
    
@@ -90,5 +91,11 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    Block = (WT | EOL)* BRA (WT | EOL)* Node* (WT | EOL)* KET;
 
-   IfStatement = "if" WT+ '(' Expression:c ')' Block:trueNodes ((WT | EOL)* "else" Block)?:falseNodes -> { return new IfStatement(c, trueNodes.Results, falseNodes.Results); };
+   IfStatement = "if" WT* '(' Expression:c ')' Block:trueNodes ((WT | EOL)* "else" Block)?:falseNodes -> { return new IfStatement(c, trueNodes.Results, falseNodes.Results); };
+   TIfStatement = "@if" WT* '(' Expression:c ')' Block:trueNodes ((WT | EOL)* "else" Block)?:falseNodes -> { return new IfStatement(c, trueNodes.Results, falseNodes.Results, true); };
+
+   Return = "return" ((WT+ | (WT* ',' WT*)) Expression)*:parameters -> { return new Return(parameters.Results); };
+
+   PostfixOperator = "<<" | ">>" | "^";
+   PostfixOp = Expression:e PostfixOperator:op -> { return new PostfixOp(e, Input(op)); };
 }

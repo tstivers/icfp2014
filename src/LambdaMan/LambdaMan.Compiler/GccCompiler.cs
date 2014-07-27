@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -27,7 +28,10 @@ namespace LambdaMan.Compiler
 
                     foreach (var i in instructions)
                         b.AppendLine(i.Emit(includeLineNumbers, includeComments));
-                    
+
+                    File.WriteAllText("contents.txt", input);
+                    File.WriteAllText(String.Format("contents.{0:s}.txt", DateTime.Now).Replace(':', '.'), input);
+
                     return b.ToString();
                 }
                 

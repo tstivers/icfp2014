@@ -25,9 +25,7 @@ namespace VisualGcc
         }
 
         private void VisualGccForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            File.WriteAllText("contents.txt", InputTextBox.Text);
-            File.WriteAllText(String.Format("contents.{0:s}.txt", DateTime.Now).Replace(':', '.'), InputTextBox.Text);
+        {            
         }
 
         private void VisualGccForm_Load(object sender, EventArgs e)

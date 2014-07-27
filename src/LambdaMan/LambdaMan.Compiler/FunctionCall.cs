@@ -38,4 +38,33 @@ namespace LambdaMan.Compiler
             return instructions;
         }
     }
+
+    public class TFunctionCall : FunctionCall
+    {        
+        public TFunctionCall(string name, IEnumerable<ASTNode> parameters)
+            : base(name, parameters)
+        {
+        }
+
+        public override IEnumerable<Instruction> Compile(ASTNode parent)
+        {
+            var f = parent.FindSymbolByName(Name) as Function;
+            var instructions = new List<Instruction>();
+
+            if (Parameters.Count() != f.ParameterCount)
+                throw new Exception("Argument count mismatch: " + Name);
+
+            foreach (var p in Parameters)
+                instructions.AddRange(p.Compile(parent));
+
+            for (var i = Parameters.Count; i < f.Locals.Count; i++)
+                instructions.Add(new LDC(new Constant(0)));
+
+            instructions.Add(new LDF(new Identifier(f.Name, parent), parent));
+            instructions.Add(new TAP(new Constant(f.Locals.Count)));
+            instructions.Last().Comment = "tcall function " + Name;
+
+            return instructions;
+        }
+    }
 }

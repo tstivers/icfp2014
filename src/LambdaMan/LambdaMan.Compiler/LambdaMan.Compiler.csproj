@@ -66,6 +66,8 @@
     <Compile Include="Assignment.cs" />
     <Compile Include="ASTNode.cs" />
     <Compile Include="Declaration.cs" />
+    <Compile Include="PostfixOp.cs" />
+    <Compile Include="Return.cs" />
     <Compile Include="Gcc.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
