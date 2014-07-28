@@ -1,12 +1,12 @@
-LDC  0           ; function startup()
+LDC  0         
 LDC  0         
 CONS           
 LDC  0         
 CONS           
 LDF  8         
 CONS           
-RTN              ; end function startup
-LD   0    0      ; function main(state, world)
+RTN            
+LD   0    0    
 LD   0    1    
 LDC  0         
 LDC  0         
@@ -24,19 +24,19 @@ LDC  0
 LDC  0         
 LDC  0         
 LDF  38        
-AP   17          ; call function process
+AP   17        
 ST   0    0    
 LD   0    0    
 LD   0    0    
 CDR            
 LDF  34        
-TAP  2           ; tcall function finish
-RTN              ; end function main
-LD   0    0      ; function finish(state, direction)
+TAP  2         
+RTN            
+LD   0    0    
 LD   0    1    
 CONS           
-RTN              ; end function finish
-LD   0    1      ; function process(state, world)
+RTN            
+LD   0    1    
 CAR            
 ST   0    8    
 LD   0    1    
@@ -69,7 +69,7 @@ LDC  0
 LDC  0         
 LDC  0         
 LDF  142       
-AP   11          ; call function fastUpdateMapWithGhostsAndStuff
+AP   11        
 ST   0    8    
 LD   0    8    
 LDC  0         
@@ -79,7 +79,7 @@ LDC  0
 LDC  0         
 LDC  0         
 LDF  449       
-AP   7           ; call function fastGenerateDMap
+AP   7         
 ST   0    9    
 LD   0    8    
 LD   0    9    
@@ -101,7 +101,7 @@ LDC  0
 LDC  0         
 LDC  0         
 LDF  537       
-AP   19          ; call function fastProcessMap
+AP   19        
 ST   0    10   
 LD   0    10   
 LD   0    14   
@@ -134,19 +134,19 @@ LDC  0
 LDC  0         
 LDC  0         
 LDF  762       
-AP   6           ; call function findLowestValueDirection
+AP   6         
 ST   0    4    
 LD   0    2    
 LD   0    4    
 CONS           
-RTN              ; end function process
-LD   0    0      ; function fastUpdateMapWithGhostsAndStuff(map, world)
+RTN            
+LD   0    0    
 LDF  827       
-AP   1           ; call function getMapWidth
+AP   1         
 ST   0    2    
 LD   0    0    
 LDF  834       
-AP   1           ; call function getMapHeight
+AP   1         
 ST   0    3    
 LD   0    1    
 CDR            
@@ -161,7 +161,7 @@ LDC  274
 CGT            
 ST   0    6    
 LD   0    6    
-SEL  181  184    ; if __if_true_0 else __if_false_0
+SEL  181  184  
 LDC  -1        
 ST   0    8    
 
@@ -174,22 +174,22 @@ ST   0    7
 LD   0    0    
 LD   0    8    
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    9    
 LD   0    9    
 ATOM           
-TSEL 185  192    ; if __if_true_10 else __if_false_10
-RTN              ; end function fastUpdateMapWithGhostsAndStuff
-LDC  2           ; :__if_true_0
+TSEL 185  192  
+RTN            
+LDC  2         
 ST   0    6    
 JOIN           
-JOIN             ; :__if_false_0
-LDC  0           ; :__if_true_10
+JOIN           
+LDC  0         
 LD   0    3    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 RTN            
 
 LD   0    7    
@@ -206,17 +206,17 @@ LD   0    4
 LDC  0         
 LDC  0         
 LDF  302       
-AP   4           ; call function isGhostPos
+AP   4         
 ST   0    5    
 LD   0    5    
 LDC  0         
 CEQ            
-SEL  225  228    ; if __if_true_2 else __if_false_2
+SEL  225  228  
 LD   0    1    
 CDR            
 CDR            
 CDR            
-SEL  237  246    ; if __if_true_4 else __if_false_4
+SEL  237  246  
 LD   0    10   
 LD   0    9    
 CDR            
@@ -224,30 +224,30 @@ ST   0    9
 LD   0    9    
 CDR            
 ATOM           
-TSEL 247  192    ; if __if_true_9 else __if_false_9
-LDC  0           ; :__if_true_2
+TSEL 247  192  
+LDC  0         
 ST   0    10   
 JOIN           
-LD   0    5      ; :__if_false_2
+LD   0    5    
 LDC  1         
 CEQ            
-SEL  233  236    ; if __if_true_1 else __if_false_1
+SEL  233  236  
 JOIN           
-LD   0    6      ; :__if_true_1
+LD   0    6    
 ST   0    10   
 JOIN           
-JOIN             ; :__if_false_1
-LD   0    10     ; :__if_true_4
+JOIN           
+LD   0    10   
 LDC  4         
 CEQ            
-SEL  242  245    ; if __if_true_3 else __if_false_3
+SEL  242  245  
 JOIN           
-LDC  2           ; :__if_true_3
+LDC  2         
 ST   0    10   
 JOIN           
-JOIN             ; :__if_false_3
-JOIN             ; :__if_false_4
-LD   0    9      ; :__if_true_9
+JOIN           
+JOIN           
+LD   0    9    
 CDR            
 ST   0    10   
 LD   0    7    
@@ -259,57 +259,57 @@ LD   0    4
 LDC  0         
 LDC  0         
 LDF  302       
-AP   4           ; call function isGhostPos
+AP   4         
 ST   0    5    
 LD   0    5    
 LDC  0         
 CEQ            
-SEL  279  282    ; if __if_true_6 else __if_false_6
+SEL  279  282  
 LD   0    1    
 CDR            
 CDR            
 CDR            
-SEL  291  300    ; if __if_true_8 else __if_false_8
+SEL  291  300  
 LD   0    10   
 LDC  0         
 LD   0    2    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 LDC  1         
-TSEL 166  0      ; goto loopy
-LDC  0           ; :__if_true_6
+TSEL 166  0    
+LDC  0         
 ST   0    10   
 JOIN           
-LD   0    5      ; :__if_false_6
+LD   0    5    
 LDC  1         
 CEQ            
-SEL  287  290    ; if __if_true_5 else __if_false_5
+SEL  287  290  
 JOIN           
-LD   0    6      ; :__if_true_5
+LD   0    6    
 ST   0    10   
 JOIN           
-JOIN             ; :__if_false_5
-LD   0    10     ; :__if_true_8
+JOIN           
+LD   0    10   
 LDC  4         
 CEQ            
-SEL  296  299    ; if __if_true_7 else __if_false_7
+SEL  296  299  
 JOIN           
-LDC  2           ; :__if_true_7
+LDC  2         
 ST   0    10   
 JOIN           
-JOIN             ; :__if_false_7
-JOIN             ; :__if_false_8
-BRK              ; :__if_false_9
+JOIN           
+JOIN           
+BRK            
 
 LD   0    1    
 ATOM           
-TSEL 306  308    ; if __if_true_13 else __if_false_13
-RTN              ; end function isGhostPos
-LDC  2           ; :__if_true_13
+TSEL 306  308  
 RTN            
-LD   0    1      ; :__if_false_13
+LDC  2         
+RTN            
+LD   0    1    
 CAR            
 ST   0    3    
 LD   0    1    
@@ -320,12 +320,12 @@ LD   0    3
 CDR            
 CAR            
 LDF  385       
-AP   2           ; call function consEqual
-TSEL 321  324    ; if __if_true_12 else __if_false_12
-LD   0    3      ; :__if_true_12
+AP   2         
+TSEL 321  324  
+LD   0    3    
 CAR            
 RTN            
-LD   0    0      ; :__if_false_12
+LD   0    0    
 LD   0    3    
 CDR            
 CAR            
@@ -333,20 +333,20 @@ LD   0    3
 CDR            
 CDR            
 LDF  340       
-AP   2           ; call function getNewPos
+AP   2         
 LDF  385       
-AP   2           ; call function consEqual
-TSEL 336  302    ; if __if_true_11 else __if_false_11
-LD   0    3      ; :__if_true_11
+AP   2         
+TSEL 336  302  
+LD   0    3    
 CAR            
 RTN            
-BRK              ; :__if_false_11
-LD   0    1      ; function getNewPos(pos, direction)
+BRK            
+LD   0    1    
 LDC  0         
 CEQ            
-TSEL 345  353    ; if __if_true_16 else __if_false_16
-RTN              ; end function getNewPos
-LD   0    0      ; :__if_true_16
+TSEL 345  353  
+RTN            
+LD   0    0    
 CAR            
 LD   0    0    
 CDR            
@@ -354,11 +354,11 @@ LDC  1
 SUB            
 CONS           
 RTN            
-LD   0    1      ; :__if_false_16
+LD   0    1    
 LDC  1         
 CEQ            
-TSEL 357  365    ; if __if_true_15 else __if_false_15
-LD   0    0      ; :__if_true_15
+TSEL 357  365  
+LD   0    0    
 CAR            
 LDC  1         
 ADD            
@@ -366,11 +366,11 @@ LD   0    0
 CDR            
 CONS           
 RTN            
-LD   0    1      ; :__if_false_15
+LD   0    1    
 LDC  2         
 CEQ            
-TSEL 369  377    ; if __if_true_14 else __if_false_14
-LD   0    0      ; :__if_true_14
+TSEL 369  377  
+LD   0    0    
 CAR            
 LD   0    0    
 CDR            
@@ -378,7 +378,7 @@ LDC  1
 ADD            
 CONS           
 RTN            
-LD   0    0      ; :__if_false_14
+LD   0    0    
 CAR            
 LDC  1         
 SUB            
@@ -386,78 +386,78 @@ LD   0    0
 CDR            
 CONS           
 RTN            
-LD   0    0      ; function consEqual(a, b)
+LD   0    0    
 CAR            
 LD   0    1    
 CAR            
 CEQ            
-TSEL 392  402    ; if __if_true_18 else __if_false_18
-RTN              ; end function consEqual
-LD   0    0      ; :__if_true_18
+TSEL 392  402  
+RTN            
+LD   0    0    
 CDR            
 LD   0    1    
 CDR            
 CEQ            
-TSEL 398  400    ; if __if_true_17 else __if_false_17
-LDC  1           ; :__if_true_17
+TSEL 398  400  
+LDC  1         
 RTN            
-LDC  0           ; :__if_false_17
+LDC  0         
 RTN            
-LDC  0           ; :__if_false_18
+LDC  0         
 RTN            
-LD   0    0      ; function findLowest(a, b, c, d)
+LD   0    0    
 LD   0    1    
 CGT            
-SEL  418  421    ; if __if_true_19 else __if_false_19
+SEL  418  421  
 LD   0    0    
 LD   0    2    
 CGT            
-SEL  422  425    ; if __if_true_20 else __if_false_20
+SEL  422  425  
 LD   0    0    
 LD   0    3    
 CGT            
-SEL  426  429    ; if __if_true_21 else __if_false_21
+SEL  426  429  
 LD   0    0    
-RTN              ; end function findLowest
-LD   0    1      ; :__if_true_19
+RTN            
+LD   0    1    
 ST   0    0    
 JOIN           
-JOIN             ; :__if_false_19
-LD   0    2      ; :__if_true_20
+JOIN           
+LD   0    2    
 ST   0    0    
 JOIN           
-JOIN             ; :__if_false_20
-LD   0    3      ; :__if_true_21
+JOIN           
+LD   0    3    
 ST   0    0    
 JOIN           
-JOIN             ; :__if_false_21
-LD   0    0      ; function fastCopyList(a, length)
+JOIN           
+LD   0    0    
 ATOM           
-TSEL 434  438    ; if __if_true_22 else __if_false_22
-RTN              ; end function fastCopyList
-LD   0    0      ; :__if_true_22
+TSEL 434  438  
+RTN            
+LD   0    0    
 LD   0    1    
 LDF  752       
-TAP  1           ; tcall function fastCons
-LD   0    0      ; :__if_false_22
+TAP  1         
+LD   0    0    
 CAR            
 LD   0    0    
 CDR            
 LD   0    1    
 LDF  430       
-TAP  2           ; tcall function fastCopyList
+TAP  2         
 
 DBUG           
 LDC  1         
-TSEL 445  0      ; goto loop
-RTN              ; end function dumpStack
-LD   0    0      ; function fastGenerateDMap(map)
+TSEL 445  0    
+RTN            
+LD   0    0    
 LDF  827       
-AP   1           ; call function getMapWidth
+AP   1         
 ST   0    1    
 LD   0    0    
 LDF  834       
-AP   1           ; call function getMapHeight
+AP   1         
 ST   0    2    
 LDC  -1        
 ST   0    6    
@@ -469,18 +469,18 @@ ST   0    6
 LD   0    0    
 LD   0    6    
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    3    
 LD   0    3    
 ATOM           
-TSEL 472  479    ; if __if_true_28 else __if_false_28
-RTN              ; end function fastGenerateDMap
-LDC  0           ; :__if_true_28
+TSEL 472  479  
+RTN            
+LDC  0         
 LD   0    2    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 RTN            
 
 LDC  10000     
@@ -491,7 +491,7 @@ ST   0    4
 LD   0    4    
 LDC  2         
 CEQ            
-SEL  496  499    ; if __if_true_24 else __if_false_24
+SEL  496  499  
 LD   0    5    
 LD   0    3    
 CDR            
@@ -499,66 +499,66 @@ ST   0    3
 LD   0    3    
 CDR            
 ATOM           
-TSEL 508  479    ; if __if_true_27 else __if_false_27
-LDC  0           ; :__if_true_24
+TSEL 508  479  
+LDC  0         
 ST   0    5    
 JOIN           
-LD   0    4      ; :__if_false_24
+LD   0    4    
 LDC  3         
 CEQ            
-SEL  504  507    ; if __if_true_23 else __if_false_23
+SEL  504  507  
 JOIN           
-LDC  0           ; :__if_true_23
+LDC  0         
 ST   0    5    
 JOIN           
-JOIN             ; :__if_false_23
-LD   0    3      ; :__if_true_27
+JOIN           
+LD   0    3    
 CDR            
 ST   0    4    
 LD   0    4    
 LDC  2         
 CEQ            
-SEL  524  527    ; if __if_true_26 else __if_false_26
+SEL  524  527  
 LD   0    5    
 LDC  0         
 LD   0    1    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 LDC  1         
-TSEL 459  0      ; goto loopy
-LDC  0           ; :__if_true_26
+TSEL 459  0    
+LDC  0         
 ST   0    5    
 JOIN           
-LD   0    4      ; :__if_false_26
+LD   0    4    
 LDC  3         
 CEQ            
-SEL  532  535    ; if __if_true_25 else __if_false_25
+SEL  532  535  
 JOIN           
-LDC  0           ; :__if_true_25
+LDC  0         
 ST   0    5    
 JOIN           
-JOIN             ; :__if_false_25
-BRK              ; :__if_false_27
-LD   0    0      ; function fastProcessMap(map, dmap, ppos)
+JOIN           
+BRK            
+LD   0    0    
 LDF  827       
-AP   1           ; call function getMapWidth
+AP   1         
 ST   0    3    
 LD   0    0    
 LDF  834       
-AP   1           ; call function getMapHeight
+AP   1         
 ST   0    4    
 
 LD   0    1    
 LDC  0         
 LDF  807       
-AP   2           ; call function at
+AP   2         
 LD   0    3    
 LDC  1         
 ADD            
 LDF  430       
-AP   2           ; call function fastCopyList
+AP   2         
 LDC  0         
 ST   0    14   
 LDC  1         
@@ -579,78 +579,78 @@ LD   0    14
 LDC  1         
 SUB            
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    5    
 LD   0    0    
 LD   0    14   
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    6    
 LD   0    0    
 LD   0    14   
 LDC  1         
 ADD            
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    7    
 LD   0    1    
 LD   0    14   
 LDC  1         
 SUB            
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    8    
 LD   0    1    
 LD   0    14   
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    9    
 LD   0    1    
 LD   0    14   
 LDC  1         
 ADD            
 LDF  807       
-AP   2           ; call function at
+AP   2         
 ST   0    10   
 LD   0    7    
 ATOM           
-TSEL 610  644    ; if __if_true_37 else __if_false_37
-RTN              ; end function fastProcessMap
-LD   0    1      ; :__if_true_37
+TSEL 610  644  
+RTN            
+LD   0    1    
 LD   0    14   
 LDF  807       
-AP   2           ; call function at
+AP   2         
 LD   0    3    
 LDC  1         
 ADD            
 LDF  430       
-AP   2           ; call function fastCopyList
+AP   2         
 LDC  0         
 LD   0    16   
-TSEL 622  628    ; if __if_true_30 else __if_false_30
-LD   0    4      ; :__if_true_30
+TSEL 622  628  
+LD   0    4    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 RTN            
-LD   0    17     ; :__if_false_30
-TSEL 630  636    ; if __if_true_29 else __if_false_29
-LD   0    4      ; :__if_true_29
+LD   0    17   
+TSEL 630  636  
+LD   0    4    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 RTN            
-LD   0    4      ; :__if_false_29
+LD   0    4    
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 ST   0    1    
 LDC  1         
-TSEL 545  0      ; goto loopz
-LD   0    9      ; :__if_false_37
+TSEL 545  0    
+LD   0    9    
 CAR            
 
 LD   0    13   
@@ -666,7 +666,7 @@ CDR
 CAR            
 ST   0    12   
 LD   0    11   
-SEL  684  739    ; if __if_true_35 else __if_false_35
+SEL  684  739  
 LD   0    5    
 CDR            
 ST   0    5    
@@ -690,8 +690,8 @@ LD   0    5
 CDR            
 CDR            
 ATOM           
-TSEL 740  646    ; if __if_true_36 else __if_false_36
-LD   0    8      ; :__if_true_35
+TSEL 740  646  
+LD   0    8    
 CDR            
 CAR            
 LD   0    10   
@@ -704,29 +704,29 @@ CDR
 CDR            
 CAR            
 LDF  404       
-AP   4           ; call function findLowest
+AP   4         
 ST   0    18   
 LD   0    12   
 LD   0    18   
 CGT            
-SEL  704  738    ; if __if_true_34 else __if_false_34
+SEL  704  738  
 JOIN           
-LD   0    12     ; :__if_true_34
+LD   0    12   
 LDC  2         
 ADD            
 LD   0    18   
 CGT            
-SEL  711  737    ; if __if_true_33 else __if_false_33
+SEL  711  737  
 JOIN           
-LD   0    12     ; :__if_true_33
+LD   0    12   
 LD   0    18   
 LDC  1         
 ADD            
 CEQ            
-SEL  718  719    ; if __if_true_32 else __if_false_32
+SEL  718  719  
 JOIN           
-JOIN             ; :__if_true_32
-LD   0    18     ; :__if_false_32
+JOIN           
+LD   0    18   
 LDC  1         
 ADD            
 ST   0    12   
@@ -737,17 +737,17 @@ LD   0    13
 LD   0    14   
 CONS           
 LDF  385       
-AP   2           ; call function consEqual
-SEL  733  736    ; if __if_true_31 else __if_false_31
+AP   2         
+SEL  733  736  
 JOIN           
-LDC  1           ; :__if_true_31
+LDC  1         
 ST   0    17   
 JOIN           
-JOIN             ; :__if_false_31
-JOIN             ; :__if_false_33
-JOIN             ; :__if_false_34
-JOIN             ; :__if_false_35
-LD   0    9      ; :__if_true_36
+JOIN           
+JOIN           
+JOIN           
+JOIN           
+LD   0    9    
 CDR            
 CAR            
 LDC  0         
@@ -755,41 +755,41 @@ LD   0    3
 LDC  1         
 ADD            
 LDF  752       
-AP   1           ; call function fastCons
+AP   1         
 LDC  1         
-TSEL 562  0      ; goto loopy
-BRK              ; :__if_false_36
-LD   0    0      ; function fastCons(i)
-TSEL 755  761    ; if __if_true_38 else __if_false_38
-RTN              ; end function fastCons
-CONS             ; :__if_true_38
+TSEL 562  0    
+BRK            
+LD   0    0    
+TSEL 755  761  
+RTN            
+CONS           
 LD   0    0    
 LDC  1         
 SUB            
 LDF  752       
-TAP  1           ; tcall function fastCons
-RTN              ; :__if_false_38
-LDC  100000       ; function findLowestValueDirection(map, positions)
+TAP  1         
+RTN            
+LDC  100000     
 ST   0    3    
 LDC  -1        
 ST   0    4    
 
 LD   0    1    
 ATOM           
-TSEL 770  772    ; if __if_true_40 else __if_false_40
-RTN              ; end function findLowestValueDirection
-LD   0    4      ; :__if_true_40
+TSEL 770  772  
 RTN            
-LD   0    0      ; :__if_false_40
+LD   0    4    
+RTN            
+LD   0    0    
 LD   0    1    
 CAR            
 LDF  797       
-AP   2           ; call function getMapSquare
+AP   2         
 ST   0    2    
 LD   0    3    
 LD   0    2    
 CGT            
-SEL  791  796    ; if __if_true_39 else __if_false_39
+SEL  791  796  
 LD   0    5    
 LDC  1         
 ADD            
@@ -798,70 +798,70 @@ LD   0    1
 CDR            
 ST   0    1    
 LDC  1         
-TSEL 766  0      ; goto loop
-LD   0    2      ; :__if_true_39
+TSEL 766  0    
+LD   0    2    
 ST   0    3    
 LD   0    5    
 ST   0    4    
 JOIN           
-JOIN             ; :__if_false_39
-LD   0    0      ; function getMapSquare(map, coord)
+JOIN           
+LD   0    0    
 LD   0    1    
 CDR            
 LDF  807       
-AP   2           ; call function at
+AP   2         
 LD   0    1    
 CAR            
 LDF  807       
-TAP  2           ; tcall function at
-RTN              ; end function getMapSquare
-LD   0    1      ; function at(list, index)
+TAP  2         
+RTN            
+LD   0    1    
 LDC  0         
 CEQ            
-TSEL 812  820    ; if __if_true_42 else __if_false_42
-RTN              ; end function at
-LD   0    0      ; :__if_true_42
-ATOM           
-TSEL 815  817    ; if __if_true_41 else __if_false_41
-LDC  0           ; :__if_true_41
+TSEL 812  820  
 RTN            
-LD   0    0      ; :__if_false_41
+LD   0    0    
+ATOM           
+TSEL 815  817  
+LDC  0         
+RTN            
+LD   0    0    
 CAR            
 RTN            
-LD   0    0      ; :__if_false_42
+LD   0    0    
 CDR            
 LD   0    1    
 LDC  1         
 SUB            
 LDF  807       
-TAP  2           ; tcall function at
-LD   0    0      ; function getMapWidth(map)
+TAP  2         
+LD   0    0    
 CDR            
 CAR            
 LDC  0         
 LDF  839       
-TAP  2           ; tcall function findLength
-RTN              ; end function getMapWidth
-LD   0    0      ; function getMapHeight(map)
+TAP  2         
+RTN            
+LD   0    0    
 LDC  0         
 LDF  839       
-TAP  2           ; tcall function findLength
-RTN              ; end function getMapHeight
-LD   0    0      ; function findLength(list, length)
+TAP  2         
+RTN            
+LD   0    0    
 CDR            
 ATOM           
-TSEL 844  846    ; if __if_true_43 else __if_false_43
-RTN              ; end function findLength
-LD   0    1      ; :__if_true_43
+TSEL 844  846  
 RTN            
-LD   0    0      ; :__if_false_43
+LD   0    1    
+RTN            
+LD   0    0    
 CDR            
 LD   0    1    
 LDC  1         
 ADD            
 LDF  839       
-TAP  2           ; tcall function findLength
+TAP  2         
 RTN            
-LD   0    0      ; function debug(x)
+LD   0    0    
 DBUG           
-RTN              ; end function debug
+RTN            
