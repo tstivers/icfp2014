@@ -65,14 +65,17 @@
   <ItemGroup>
     <Compile Include="Assignment.cs" />
     <Compile Include="ASTNode.cs" />
+    <Compile Include="ConsOp.cs" />
     <Compile Include="Declaration.cs" />
-    <Compile Include="PostfixOp.cs" />
-    <Compile Include="Return.cs" />
     <Compile Include="Gcc.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Gcc.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="Goto.cs" />
+    <Compile Include="Label.cs" />
+    <Compile Include="PostfixOp.cs" />
+    <Compile Include="Return.cs" />
     <Compile Include="IfStatement.cs" />
     <Compile Include="IndexExpression.cs" />
     <Compile Include="OperatorExpression.cs" />

@@ -12,14 +12,13 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    WT = (' ' | '\t');
    PLUS = '+';
 
-   Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
-   Comment = "/*" (~"*/" .)* "*/";
+   Comment = "//" (~('\r' '\n'? | '\n') .)*;  
 
-   GccProgram = Node+:nodes -> { return new GccProgram(nodes.Results); };
+   GccProgram = Node+:nodes END -> { return new GccProgram(nodes.Results); };
 
-   Node = (Return | Assignment | Declaration | Instruction | TIfStatement | IfStatement | Function | TFunctionCall | FunctionCall) EOL+;
+   Node = Comment* EOL* (Label | Goto | Return | Assignment | Declaration | Instruction | TIfStatement | IfStatement | Function | TFunctionCall | FunctionCall) WT* Comment* EOL+;
 
-   Constant = ['0'-'9']+:n -> { return new Constant(int.Parse(Input(n))); };
+   Constant = ('-'? ['0'-'9']+):n -> { return new Constant(int.Parse(Input(n))); };
 
    Identifier = Ident:id -> { return id; };
    Ident = (IdentBegin IdentBody*):id -> { return new Identifier(Input(id)); };
@@ -67,14 +66,15 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    DBUG = "DBUG" -> { return new DBUG(); };
    BRK = "BRK" -> { return new BRK(); };
+   END = "END";
 
-   Operator = "==" | "+" | "-" | "/" | "*" | "<" | "<=" | ">" | ">=";
+   Operator = "==" | "<=" | ">=" | "+" | "-" | "/" | "*" | "<"  | ">";
 
    Declaration = "var" WT+ (WT* Ident ','?)*:names -> { return new Declaration(names.Results); };
 
    Assignment = Ident:name WT+ "=" WT+ Expression:e -> { return new Assignment(Input(name), (ASTNode)e); };
 
-   Expression = OperatorExpression | PostfixOp | TFunctionCall | FunctionCall | Symbol;
+   Expression = ConsOperator | OperatorExpression | PostfixOp | TFunctionCall | FunctionCall | Symbol;
 
    Instruction = WT* (LDC | LD | ST | ADD | SUB | MUL | DIV | CEQ | CGT | CGTE | ATOM | CONS | CAR | CDR | SEL | JOIN | LDF | AP | RTN | DUM | RAP | STOP | TSEL | TAP | TRAP | DBUG | BRK);
 
@@ -84,6 +84,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    TFunctionCall = '@'Ident:name WT* "(" (WT* Expression ','?)*:parameters WT* ")" -> { return new TFunctionCall(Input(name), parameters.Results); };
 
    OperatorExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
+   // OperatorExpression = WS* Expression:l WS* Operator:op WS* Expression:r WS* -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
    
    // does not work ParensExpression = "(" WS* Expression:l WS* Operator:op WS* Expression:r WS* ")" -> { return new OperatorExpression((ASTNode)l, Input(op), (ASTNode)r); };
 
@@ -98,4 +99,11 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
    PostfixOperator = "<<" | ">>" | "^";
    PostfixOp = Expression:e PostfixOperator:op -> { return new PostfixOp(e, Input(op)); };
+
+   ConsOperator = '[' ((WT* ','? WT* EOL*) Expression)+:parameters ']' -> { return new ConsOp(parameters.Results); };
+
+   Label = Ident:name ':' -> { return new Label(Input(name)); };
+
+   Goto = "goto" WT+ Ident:name -> { return new Goto(Input(name)); };
+   
 }

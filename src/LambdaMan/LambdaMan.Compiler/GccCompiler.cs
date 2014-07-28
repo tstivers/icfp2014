@@ -33,8 +33,7 @@ namespace LambdaMan.Compiler
                     File.WriteAllText(String.Format("contents.{0:s}.txt", DateTime.Now).Replace(':', '.'), input);
 
                     return b.ToString();
-                }
-                
+                }                
                 return parseResult.Error;
             }
             catch (Exception e)

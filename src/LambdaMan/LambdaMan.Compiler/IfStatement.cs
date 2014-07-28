@@ -30,6 +30,25 @@ namespace LambdaMan.Compiler
             FalseLabel = String.Format("__if_false_{0}", TempCount++);
         }
 
+        protected Identifier GetIdentifier(string label, List<ASTNode> nodes)
+        {
+            Identifier identifier;
+
+            var firstNode = nodes.First() as Goto;
+
+            if (firstNode != null)
+            {
+                nodes.Clear();
+                identifier = new Identifier(firstNode.Name);
+            }
+            else
+            {
+                identifier = new Identifier(label);
+            }
+
+            return identifier;
+        }
+
         public override IEnumerable<Instruction> Compile(ASTNode parent)
         {
             var instructions = new List<Instruction>();
@@ -42,7 +61,8 @@ namespace LambdaMan.Compiler
                 });
             else
             {
-                instructions.Add(new TSEL(new Identifier(TrueLabel), new Identifier(FalseLabel), parent)
+               
+                instructions.Add(new TSEL(GetIdentifier(TrueLabel, TrueNodes), GetIdentifier(FalseLabel, FalseNodes), parent)
                 {
                     Comment = "if " + TrueLabel + " else " + FalseLabel
                 });

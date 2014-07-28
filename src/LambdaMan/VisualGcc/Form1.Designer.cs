@@ -93,6 +93,7 @@
             this.InputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.InputTextBox.Size = new System.Drawing.Size(830, 901);
             this.InputTextBox.TabIndex = 0;
+            this.InputTextBox.WordWrap = false;
             this.InputTextBox.TextChanged += new System.EventHandler(this.InputTextBox_TextChanged);
             this.InputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTextBox_KeyDown);
             // 
@@ -107,6 +108,7 @@
             this.OutputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.OutputTextBox.Size = new System.Drawing.Size(438, 901);
             this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.WordWrap = false;
             this.OutputTextBox.Enter += new System.EventHandler(this.OutputTextBox_Enter);
             // 
             // tableLayoutPanel1
