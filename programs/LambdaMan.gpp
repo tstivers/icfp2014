@@ -40,7 +40,6 @@ function process(state, world)
 	fmap = fastProcessMap(map, dmap, player_pos)		
 
 	direction = findLowestValueDirection(fmap, [[x, (y-1)], [(x+1), y], [x, (y+1)], [(x-1), y], 0])
-	dumpStack()
 	return [player_pos, direction]
 }
 
