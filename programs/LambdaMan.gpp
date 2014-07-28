@@ -1,0 +1,409 @@
+function startup()
+{
+	LDC 0
+	LDC 0
+	CONS
+	LDC 0
+	CONS
+	LDF main
+	CONS
+}
+
+function main(state, world)
+{
+	state = process(state, world)
+	@finish(state, state>>)
+}
+
+function finish(state, direction)
+{
+	return	[state, direction]
+}
+
+function process(state, world)
+{
+	var player_pos, last_pos, direction, score, world_width, world_height
+	var map, dmap, fmap
+	var surroundings, next_square, found_dot
+	var x,y, debugflag
+
+	map = world<<
+	player_pos = world>><<>><<
+	x = player_pos<<
+	y = player_pos>>
+	
+	last_pos = state<<
+	direction = state>>
+
+ 	map = fastUpdateMapWithGhostsAndStuff(map, world)
+	dmap = fastGenerateDMap(map)
+	fmap = fastProcessMap(map, dmap, player_pos)		
+
+	direction = findLowestValueDirection(fmap, [[x, (y-1)], [(x+1), y], [x, (y+1)], [(x-1), y], 0])
+	dumpStack()
+	return [player_pos, direction]
+}
+
+function fastUpdateMapWithGhostsAndStuff(map, world)
+{
+	var width, height
+	var ghosts, ghostState
+	var vitality
+	var x, y, row, cell
+
+	width = getMapWidth(map)
+	height = getMapHeight(map)
+	ghosts = world>>>><<
+	vitality = (world>><<<< > 274)
+	if(vitality) {
+		vitality = 2
+	}
+
+	y = -1
+loopy:
+	y = (y + 1)
+	x = -1
+	row = at(map, y)
+	@if(row^)
+	{
+		push 0
+		return fastCons((height + 1))	
+	} else {
+loopx:
+	x = (x + 1)
+	cell = row<<
+
+	ghostState = isGhostPos([x, y], ghosts)
+
+	if ((ghostState == 0)) {
+			cell = 0
+		} else {
+			if ((ghostState == 1)) {
+				cell = vitality
+		}
+	}
+
+	if (world>>>>>>) { // fruit is up
+		if((cell == 4)) { // fruit square
+			cell = 2
+		}
+	}
+
+	push cell
+	row = row>>
+	@if(row>>^) {
+		cell = row>>
+		ghostState = isGhostPos([(x + 1), y], ghosts)
+			if ((ghostState == 0)) {
+				cell = 0
+			} else {
+				if ((ghostState == 1)) {
+					cell = vitality
+			}
+		}
+
+		if (world>>>>>>) { // fruit is up
+			if((cell == 4)) { // fruit square
+				cell = 2
+			}
+		}
+		push cell
+		push 0
+		push fastCons((width + 1))
+		goto loopy
+	} else {
+		goto loopx
+	}
+	}
+}
+
+function isGhostPos(pos, ghosts)
+{
+	var gpos, ghost
+loop:
+	@if(ghosts^) {
+		return 2
+	} else {
+		ghost = ghosts<<
+		ghosts = ghosts>>
+		@if(consEqual(pos, ghost>><<)) {
+			return ghost<<
+		} else {
+			@if(consEqual(pos, getNewPos(ghost>><<, ghost>>>>))) {
+				return ghost<<
+			} else {
+				goto loop
+			}
+		}
+	}
+}
+
+function getNewPos(pos, direction)
+{
+	@if ((direction == 0)) {
+		return [pos<<, (pos>> - 1)]
+	} else { 
+		@if ((direction == 1)) {
+			return [(pos<< + 1), pos>>]
+		} else {
+			@if ((direction == 2)) {
+				return [pos<<, (pos>> + 1)]
+			} else { 				
+				return [(pos<< - 1), pos>>]						
+			}
+		}
+	} 
+}
+
+function consEqual(a, b)
+{
+	@if((a<< == b<<)) {
+		@if((a>> == b>>)) {
+			return 1
+		} else {
+			return 0
+		}
+	} else {
+		return 0
+	}
+}
+
+function findLowest(a, b, c, d)
+{
+	if ((b < a)){
+		a = b
+	}
+	if ((c < a)) {
+		a = c
+	}
+	if ((d < a)) {
+		a = d
+	}
+	return a
+}
+
+function fastCopyList(a, length)
+{
+	@if(a^) {
+		push a
+		@fastCons(length)
+	} else {
+		push a<<
+		@fastCopyList(a>>, length)
+	}
+}
+
+function dumpStack()
+{
+loop:
+	DBUG
+	goto loop
+}
+
+function fastGenerateDMap(map)
+{
+	var width, height
+	var row, cell, value, y
+
+	width = getMapWidth(map)
+	height = getMapHeight(map)
+	y = -1
+loopy:
+	y = (y + 1)
+	row = at(map, y)
+	@if(row^)
+	{
+		push 0
+		return fastCons((height + 1))	
+	} else {
+loopx:
+	value = 10000
+	cell = row<<
+	if ((cell == 2)) {
+		value = 0
+	} else {
+		if ((cell == 3)) {
+			value = 0
+		}	
+	}
+	push value
+	row = row>>
+	@if(row>>^) {
+		cell = row>>
+		if ((cell == 2)) {
+			value = 0
+		} else {
+			if ((cell == 3)) {
+				value = 0
+			}	
+		}
+		push value
+		push 0
+		push fastCons((width + 1))
+		goto loopy
+	} else {
+		goto loopx
+	}
+	}
+}
+
+function fastProcessMap(map, dmap, ppos)
+{
+	var width, height
+	var map_a, map_b, map_c
+	var dmap_a, dmap_b, dmap_c
+
+	var center, d_center
+	var x, y, z
+	var done, shortcircuit
+	var lowest
+
+	width = getMapWidth(map)
+	height = getMapHeight(map)
+
+loopz:
+	push fastCopyList(at(dmap, 0), (width + 1))
+	y = 0
+	done = 1
+	z = (z + 1)
+loopy:
+	y = (y + 1)
+	x = 0
+	map_a = at(map, (y - 1))
+	map_b = at(map, y)
+	map_c = at(map, (y + 1))
+
+	dmap_a = at(dmap, (y - 1))
+	dmap_b = at(dmap, y)
+	dmap_c = at(dmap, (y + 1))
+	
+	@if (map_c^) {
+		push fastCopyList(at(dmap, y), (width + 1))
+		push 0
+		@if(done) {
+			return fastCons((height + 1))
+		} else {
+			@if(shortcircuit) {
+				return fastCons((height + 1))
+			} else {
+				dmap = fastCons((height + 1))
+				goto loopz
+			}
+		}
+	} else {
+
+		push dmap_b<<
+	
+	loopx:
+		x = (x + 1)
+		center = map_b>><<
+		d_center = dmap_b>><<
+		if (center) { // only process non-walls			
+			lowest = findLowest(dmap_a>><<, dmap_c>><<, dmap_b<<, dmap_b>>>><<)
+			if ((lowest < d_center)) {		
+				if(((d_center + 2) > lowest)) {
+					if((d_center == (lowest + 1))) {} else {
+						d_center = (lowest + 1)
+						done = 0
+						if (consEqual(ppos, [x, y])) {
+							shortcircuit = 1
+						}						
+					}
+				}
+			}
+		}
+
+		map_a = map_a>>
+		map_b = map_b>>
+		map_c = map_c>>
+
+		dmap_a = dmap_a>>
+		dmap_b = dmap_b>>
+		dmap_c = dmap_c>>
+
+		push d_center
+
+		@if (map_a>>>>^) {
+			push dmap_b>><<
+			push 0
+			push fastCons((width + 1))
+			goto loopy
+		} else {
+			goto loopx
+		}
+	}
+}
+
+function fastCons(i)
+{
+	@if (i) {
+		CONS
+		@fastCons((i - 1))
+	} else {
+		return
+	}
+}
+
+function findLowestValueDirection(map, positions)
+{
+	var cvalue, value, direction, d
+	value = 100000
+	direction = -1
+loop:
+	@if(positions^) {
+		return direction
+	} else {
+		cvalue = getMapSquare(map, positions<<)
+		if((cvalue < value)) {
+			value = cvalue
+			direction = d
+		}
+		d = (d + 1)
+		positions = positions>>
+		goto loop
+	}
+}
+
+
+function getMapSquare(map, coord) {
+	@at(at(map, coord>>), coord<<)
+}
+
+function at(list, index) {
+	@if ((index == 0)) {
+		@if(list^) {	
+			return 0
+		} else {
+			return list<<
+		}
+	} else {
+		@at(list>>, (index - 1))
+	}
+}
+
+function getMapWidth(map)
+{
+	@findLength(map>><<, 0)	
+}
+
+function getMapHeight(map)
+{
+	@findLength(map, 0)	
+}
+
+function findLength(list, length)
+{
+	@if (list>>^) {
+		return length
+	} else {
+		return @findLength(list>>, (length + 1))
+	}	
+}
+
+function debug(x)
+{
+	LD 0 x
+	DBUG
+}
+
+END

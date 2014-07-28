@@ -75,6 +75,7 @@
     <Compile Include="Goto.cs" />
     <Compile Include="Label.cs" />
     <Compile Include="PostfixOp.cs" />
+    <Compile Include="Push.cs" />
     <Compile Include="Return.cs" />
     <Compile Include="IfStatement.cs" />
     <Compile Include="IndexExpression.cs" />

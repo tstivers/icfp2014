@@ -12,11 +12,11 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    WT = (' ' | '\t');
    PLUS = '+';
 
-   Comment = "//" (~('\r' '\n'? | '\n') .)*;  
+   Comment = "//" (~('\r' '\n'? | '\n') .)* EOL*;  
 
    GccProgram = Node+:nodes END -> { return new GccProgram(nodes.Results); };
 
-   Node = Comment* EOL* (Label | Goto | Return | Assignment | Declaration | Instruction | TIfStatement | IfStatement | Function | TFunctionCall | FunctionCall) WT* Comment* EOL+;
+   Node = Comment* (Label | Goto | Return | Push | Assignment | Declaration | Instruction | TIfStatement | IfStatement | Function | TFunctionCall | FunctionCall) WT* Comment* EOL+;
 
    Constant = ('-'? ['0'-'9']+):n -> { return new Constant(int.Parse(Input(n))); };
 
@@ -105,5 +105,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
    Label = Ident:name ':' -> { return new Label(Input(name)); };
 
    Goto = "goto" WT+ Ident:name -> { return new Goto(Input(name)); };
+
+   Push = "push" ((WT+ | (WT* ',' WT*)) Expression)*:parameters -> { return new Push(parameters.Results); };
    
 }

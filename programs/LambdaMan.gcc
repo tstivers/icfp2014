@@ -1,36 +1,869 @@
-function startup()
-{
-	LDC 0
-	LDF main
-	CONS
-}
+LDC  0         
+LDC  0         
+CONS           
+LDC  0         
+CONS           
+LDF  8         
+CONS           
+RTN            
+LD   0    0    
+LD   0    1    
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDF  38        
+AP   17        
+ST   0    0    
+LD   0    0    
+LD   0    0    
+CDR            
+LDF  34        
+TAP  2         
+RTN            
+LD   0    0    
+LD   0    1    
+CONS           
+RTN            
+LD   0    1    
+CAR            
+ST   0    8    
+LD   0    1    
+CDR            
+CAR            
+CDR            
+CAR            
+ST   0    2    
+LD   0    2    
+CAR            
+ST   0    14   
+LD   0    2    
+CDR            
+ST   0    15   
+LD   0    0    
+CAR            
+ST   0    3    
+LD   0    0    
+CDR            
+ST   0    4    
+LD   0    8    
+LD   0    1    
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDF  144       
+AP   11        
+ST   0    8    
+LD   0    8    
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDF  451       
+AP   7         
+ST   0    9    
+LD   0    8    
+LD   0    9    
+LD   0    2    
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDF  539       
+AP   19        
+ST   0    10   
+LD   0    10   
+LD   0    14   
+LD   0    15   
+LDC  1         
+SUB            
+CONS           
+LD   0    14   
+LDC  1         
+ADD            
+LD   0    15   
+CONS           
+LD   0    14   
+LD   0    15   
+LDC  1         
+ADD            
+CONS           
+LD   0    14   
+LDC  1         
+SUB            
+LD   0    15   
+CONS           
+LDC  0         
+CONS           
+CONS           
+CONS           
+CONS           
+LDC  0         
+LDC  0         
+LDC  0         
+LDC  0         
+LDF  764       
+AP   6         
+ST   0    4    
+LDF  447       
+AP   0         
+LD   0    2    
+LD   0    4    
+CONS           
+RTN            
+LD   0    0    
+LDF  829       
+AP   1         
+ST   0    2    
+LD   0    0    
+LDF  836       
+AP   1         
+ST   0    3    
+LD   0    1    
+CDR            
+CDR            
+CAR            
+ST   0    4    
+LD   0    1    
+CDR            
+CAR            
+CAR            
+LDC  274       
+CGT            
+ST   0    6    
+LD   0    6    
+SEL  183  186  
+LDC  -1        
+ST   0    8    
 
-function main(state, world)
-{
-	process(state, world)
-	finish(state)	
-}
+LD   0    8    
+LDC  1         
+ADD            
+ST   0    8    
+LDC  -1        
+ST   0    7    
+LD   0    0    
+LD   0    8    
+LDF  809       
+AP   2         
+ST   0    9    
+LD   0    9    
+ATOM           
+TSEL 187  194  
+RTN            
+LDC  2         
+ST   0    6    
+JOIN           
+JOIN           
+LDC  0         
+LD   0    3    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+RTN            
 
-function process(state, world)
-{
-	player_x = world
-	player_y = world
-	debug(player_x)
-	debug(player_y)
-}
+LD   0    7    
+LDC  1         
+ADD            
+ST   0    7    
+LD   0    9    
+CAR            
+ST   0    10   
+LD   0    7    
+LD   0    8    
+CONS           
+LD   0    4    
+LDC  0         
+LDC  0         
+LDF  304       
+AP   4         
+ST   0    5    
+LD   0    5    
+LDC  0         
+CEQ            
+SEL  227  230  
+LD   0    1    
+CDR            
+CDR            
+CDR            
+SEL  239  248  
+LD   0    10   
+LD   0    9    
+CDR            
+ST   0    9    
+LD   0    9    
+CDR            
+ATOM           
+TSEL 249  194  
+LDC  0         
+ST   0    10   
+JOIN           
+LD   0    5    
+LDC  1         
+CEQ            
+SEL  235  238  
+JOIN           
+LD   0    6    
+ST   0    10   
+JOIN           
+JOIN           
+LD   0    10   
+LDC  4         
+CEQ            
+SEL  244  247  
+JOIN           
+LDC  2         
+ST   0    10   
+JOIN           
+JOIN           
+JOIN           
+LD   0    9    
+CDR            
+ST   0    10   
+LD   0    7    
+LDC  1         
+ADD            
+LD   0    8    
+CONS           
+LD   0    4    
+LDC  0         
+LDC  0         
+LDF  304       
+AP   4         
+ST   0    5    
+LD   0    5    
+LDC  0         
+CEQ            
+SEL  281  284  
+LD   0    1    
+CDR            
+CDR            
+CDR            
+SEL  293  302  
+LD   0    10   
+LDC  0         
+LD   0    2    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+LDC  1         
+TSEL 168  0    
+LDC  0         
+ST   0    10   
+JOIN           
+LD   0    5    
+LDC  1         
+CEQ            
+SEL  289  292  
+JOIN           
+LD   0    6    
+ST   0    10   
+JOIN           
+JOIN           
+LD   0    10   
+LDC  4         
+CEQ            
+SEL  298  301  
+JOIN           
+LDC  2         
+ST   0    10   
+JOIN           
+JOIN           
+JOIN           
+BRK            
 
-function debug(x)
-{
-	LD 0 x
-	DBUG
-}
+LD   0    1    
+ATOM           
+TSEL 308  310  
+RTN            
+LDC  2         
+RTN            
+LD   0    1    
+CAR            
+ST   0    3    
+LD   0    1    
+CDR            
+ST   0    1    
+LD   0    0    
+LD   0    3    
+CDR            
+CAR            
+LDF  387       
+AP   2         
+TSEL 323  326  
+LD   0    3    
+CAR            
+RTN            
+LD   0    0    
+LD   0    3    
+CDR            
+CAR            
+LD   0    3    
+CDR            
+CDR            
+LDF  342       
+AP   2         
+LDF  387       
+AP   2         
+TSEL 338  304  
+LD   0    3    
+CAR            
+RTN            
+BRK            
+LD   0    1    
+LDC  0         
+CEQ            
+TSEL 347  355  
+RTN            
+LD   0    0    
+CAR            
+LD   0    0    
+CDR            
+LDC  1         
+SUB            
+CONS           
+RTN            
+LD   0    1    
+LDC  1         
+CEQ            
+TSEL 359  367  
+LD   0    0    
+CAR            
+LDC  1         
+ADD            
+LD   0    0    
+CDR            
+CONS           
+RTN            
+LD   0    1    
+LDC  2         
+CEQ            
+TSEL 371  379  
+LD   0    0    
+CAR            
+LD   0    0    
+CDR            
+LDC  1         
+ADD            
+CONS           
+RTN            
+LD   0    0    
+CAR            
+LDC  1         
+SUB            
+LD   0    0    
+CDR            
+CONS           
+RTN            
+LD   0    0    
+CAR            
+LD   0    1    
+CAR            
+CEQ            
+TSEL 394  404  
+RTN            
+LD   0    0    
+CDR            
+LD   0    1    
+CDR            
+CEQ            
+TSEL 400  402  
+LDC  1         
+RTN            
+LDC  0         
+RTN            
+LDC  0         
+RTN            
+LD   0    0    
+LD   0    1    
+CGT            
+SEL  420  423  
+LD   0    0    
+LD   0    2    
+CGT            
+SEL  424  427  
+LD   0    0    
+LD   0    3    
+CGT            
+SEL  428  431  
+LD   0    0    
+RTN            
+LD   0    1    
+ST   0    0    
+JOIN           
+JOIN           
+LD   0    2    
+ST   0    0    
+JOIN           
+JOIN           
+LD   0    3    
+ST   0    0    
+JOIN           
+JOIN           
+LD   0    0    
+ATOM           
+TSEL 436  440  
+RTN            
+LD   0    0    
+LD   0    1    
+LDF  754       
+TAP  1         
+LD   0    0    
+CAR            
+LD   0    0    
+CDR            
+LD   0    1    
+LDF  432       
+TAP  2         
 
-function finish(state)
-{
-	LD 0 state
-	LDC 1
-	ADD
-	LDC 3
-	CONS
-}	
+DBUG           
+LDC  1         
+TSEL 447  0    
+RTN            
+LD   0    0    
+LDF  829       
+AP   1         
+ST   0    1    
+LD   0    0    
+LDF  836       
+AP   1         
+ST   0    2    
+LDC  -1        
+ST   0    6    
 
+LD   0    6    
+LDC  1         
+ADD            
+ST   0    6    
+LD   0    0    
+LD   0    6    
+LDF  809       
+AP   2         
+ST   0    3    
+LD   0    3    
+ATOM           
+TSEL 474  481  
+RTN            
+LDC  0         
+LD   0    2    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+RTN            
+
+LDC  10000     
+ST   0    5    
+LD   0    3    
+CAR            
+ST   0    4    
+LD   0    4    
+LDC  2         
+CEQ            
+SEL  498  501  
+LD   0    5    
+LD   0    3    
+CDR            
+ST   0    3    
+LD   0    3    
+CDR            
+ATOM           
+TSEL 510  481  
+LDC  0         
+ST   0    5    
+JOIN           
+LD   0    4    
+LDC  3         
+CEQ            
+SEL  506  509  
+JOIN           
+LDC  0         
+ST   0    5    
+JOIN           
+JOIN           
+LD   0    3    
+CDR            
+ST   0    4    
+LD   0    4    
+LDC  2         
+CEQ            
+SEL  526  529  
+LD   0    5    
+LDC  0         
+LD   0    1    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+LDC  1         
+TSEL 461  0    
+LDC  0         
+ST   0    5    
+JOIN           
+LD   0    4    
+LDC  3         
+CEQ            
+SEL  534  537  
+JOIN           
+LDC  0         
+ST   0    5    
+JOIN           
+JOIN           
+BRK            
+LD   0    0    
+LDF  829       
+AP   1         
+ST   0    3    
+LD   0    0    
+LDF  836       
+AP   1         
+ST   0    4    
+
+LD   0    1    
+LDC  0         
+LDF  809       
+AP   2         
+LD   0    3    
+LDC  1         
+ADD            
+LDF  432       
+AP   2         
+LDC  0         
+ST   0    14   
+LDC  1         
+ST   0    16   
+LD   0    15   
+LDC  1         
+ADD            
+ST   0    15   
+
+LD   0    14   
+LDC  1         
+ADD            
+ST   0    14   
+LDC  0         
+ST   0    13   
+LD   0    0    
+LD   0    14   
+LDC  1         
+SUB            
+LDF  809       
+AP   2         
+ST   0    5    
+LD   0    0    
+LD   0    14   
+LDF  809       
+AP   2         
+ST   0    6    
+LD   0    0    
+LD   0    14   
+LDC  1         
+ADD            
+LDF  809       
+AP   2         
+ST   0    7    
+LD   0    1    
+LD   0    14   
+LDC  1         
+SUB            
+LDF  809       
+AP   2         
+ST   0    8    
+LD   0    1    
+LD   0    14   
+LDF  809       
+AP   2         
+ST   0    9    
+LD   0    1    
+LD   0    14   
+LDC  1         
+ADD            
+LDF  809       
+AP   2         
+ST   0    10   
+LD   0    7    
+ATOM           
+TSEL 612  646  
+RTN            
+LD   0    1    
+LD   0    14   
+LDF  809       
+AP   2         
+LD   0    3    
+LDC  1         
+ADD            
+LDF  432       
+AP   2         
+LDC  0         
+LD   0    16   
+TSEL 624  630  
+LD   0    4    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+RTN            
+LD   0    17   
+TSEL 632  638  
+LD   0    4    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+RTN            
+LD   0    4    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+ST   0    1    
+LDC  1         
+TSEL 547  0    
+LD   0    9    
+CAR            
+
+LD   0    13   
+LDC  1         
+ADD            
+ST   0    13   
+LD   0    6    
+CDR            
+CAR            
+ST   0    11   
+LD   0    9    
+CDR            
+CAR            
+ST   0    12   
+LD   0    11   
+SEL  686  741  
+LD   0    5    
+CDR            
+ST   0    5    
+LD   0    6    
+CDR            
+ST   0    6    
+LD   0    7    
+CDR            
+ST   0    7    
+LD   0    8    
+CDR            
+ST   0    8    
+LD   0    9    
+CDR            
+ST   0    9    
+LD   0    10   
+CDR            
+ST   0    10   
+LD   0    12   
+LD   0    5    
+CDR            
+CDR            
+ATOM           
+TSEL 742  648  
+LD   0    8    
+CDR            
+CAR            
+LD   0    10   
+CDR            
+CAR            
+LD   0    9    
+CAR            
+LD   0    9    
+CDR            
+CDR            
+CAR            
+LDF  406       
+AP   4         
+ST   0    18   
+LD   0    12   
+LD   0    18   
+CGT            
+SEL  706  740  
+JOIN           
+LD   0    12   
+LDC  2         
+ADD            
+LD   0    18   
+CGT            
+SEL  713  739  
+JOIN           
+LD   0    12   
+LD   0    18   
+LDC  1         
+ADD            
+CEQ            
+SEL  720  721  
+JOIN           
+JOIN           
+LD   0    18   
+LDC  1         
+ADD            
+ST   0    12   
+LDC  0         
+ST   0    16   
+LD   0    2    
+LD   0    13   
+LD   0    14   
+CONS           
+LDF  387       
+AP   2         
+SEL  735  738  
+JOIN           
+LDC  1         
+ST   0    17   
+JOIN           
+JOIN           
+JOIN           
+JOIN           
+JOIN           
+LD   0    9    
+CDR            
+CAR            
+LDC  0         
+LD   0    3    
+LDC  1         
+ADD            
+LDF  754       
+AP   1         
+LDC  1         
+TSEL 564  0    
+BRK            
+LD   0    0    
+TSEL 757  763  
+RTN            
+CONS           
+LD   0    0    
+LDC  1         
+SUB            
+LDF  754       
+TAP  1         
+RTN            
+LDC  100000     
+ST   0    3    
+LDC  -1        
+ST   0    4    
+
+LD   0    1    
+ATOM           
+TSEL 772  774  
+RTN            
+LD   0    4    
+RTN            
+LD   0    0    
+LD   0    1    
+CAR            
+LDF  799       
+AP   2         
+ST   0    2    
+LD   0    3    
+LD   0    2    
+CGT            
+SEL  793  798  
+LD   0    5    
+LDC  1         
+ADD            
+ST   0    5    
+LD   0    1    
+CDR            
+ST   0    1    
+LDC  1         
+TSEL 768  0    
+LD   0    2    
+ST   0    3    
+LD   0    5    
+ST   0    4    
+JOIN           
+JOIN           
+LD   0    0    
+LD   0    1    
+CDR            
+LDF  809       
+AP   2         
+LD   0    1    
+CAR            
+LDF  809       
+TAP  2         
+RTN            
+LD   0    1    
+LDC  0         
+CEQ            
+TSEL 814  822  
+RTN            
+LD   0    0    
+ATOM           
+TSEL 817  819  
+LDC  0         
+RTN            
+LD   0    0    
+CAR            
+RTN            
+LD   0    0    
+CDR            
+LD   0    1    
+LDC  1         
+SUB            
+LDF  809       
+TAP  2         
+LD   0    0    
+CDR            
+CAR            
+LDC  0         
+LDF  841       
+TAP  2         
+RTN            
+LD   0    0    
+LDC  0         
+LDF  841       
+TAP  2         
+RTN            
+LD   0    0    
+CDR            
+ATOM           
+TSEL 846  848  
+RTN            
+LD   0    1    
+RTN            
+LD   0    0    
+CDR            
+LD   0    1    
+LDC  1         
+ADD            
+LDF  841       
+TAP  2         
+RTN            
+LD   0    0    
+DBUG           
+RTN            
